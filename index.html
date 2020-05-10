@@ -534,16 +534,6 @@
         return { x: targetX, y: targetY };
       }
 
-      // 给定椭圆圆心和半径填充椭圆函数
-      function getEllipse(x, y, r1, r2, p) {
-        let R1 = r1 * Math.random();
-        let R2 = r2 * Math.random();
-        let theta = Math.random() * 2 * Math.PI;
-        targetX = x + R1 * Math.cos(theta);
-        targetY = y + R2 * Math.sin(theta);
-        return { x: targetX, y: targetY };
-      }
-
       // 十六进制颜色值转rgba
       function colorRgba(sHex, alpha) {
         // 十六进制颜色值的正则表达式
@@ -604,7 +594,7 @@
           prodCounts: 226,
           eneryValue: 2020,
           partnerList: [],
-          currentRound: 6,
+          currentRound: 0,
           fadeIn: false,
           infoFadeIn: false,
           timer1: null,
@@ -657,8 +647,22 @@
               });
           },
 
-          // 更新获取能量值
+          // 获取能量值
           getEnery: function () {
+            axios
+              .get("/kd/ecos/production/geteneryvalue")
+              .then((response) => {
+                if (response.status === 200 && response.data.code === 200) {
+                  this.eneryValue = response.data.data;
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          },
+
+          // 增加能量值
+          addEnery: function () {
             axios
               .get("/kd/ecos/production/eneryvalue")
               .then((response) => {
@@ -696,6 +700,9 @@
 
               // 伙伴列表轮播
               this.playPartnerList();
+
+              //增加能量值
+              this.addEnery();
             }
           },
 
@@ -813,7 +820,7 @@
             this.infoFadeIn = false;
             this.timer2 = setTimeout(() => {
               this.playPartnerInfo();
-            }, 200);
+            }, 500);
           },
         },
       });

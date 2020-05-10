@@ -14,12 +14,7 @@
       </div>
       <canvas id="canvas"></canvas>
       <div class="cloud-container">
-        <img
-          id="cloudStar"
-          class="cloud-star"
-          src="/images/cloud_star.svg"
-          alt="金蝶云生态树"
-        />
+        <img id="cloudStar" class="cloud-star" src="/images/cloud_star.svg" alt="金蝶云生态树" />
       </div>
       <div id="lottie"></div>
     </div>
@@ -79,11 +74,7 @@
               </header>
             </div>
           </div>
-          <button
-            class="interactive-light"
-            v-if="!isLightUp"
-            @click="handleLightUp"
-          >
+          <button class="interactive-light" v-if="!isLightUp" @click="handleLightUp">
             <img :src="`/images/icon_light@${dpr}x.png`" alt="点亮生态树" />
             点亮生态树
           </button>
@@ -108,20 +99,13 @@
             </div>
             <div class="counts-cont">
               <div class="counts-partner">
-                <h4>
-                  <img
-                    :src="`/images/icon_partner@${dpr}x.png`"
-                    alt=""
-                  />总伙伴数
-                </h4>
+                <h4><img :src="`/images/icon_partner@${dpr}x.png`" alt="" />总伙伴数</h4>
                 <ul class="counts-numbers">
                   <li v-for="item in partnerCounts">{{item}}</li>
                 </ul>
               </div>
               <div class="counts-app">
-                <h4>
-                  <img :src="`/images/icon_app@${dpr}x.png`" alt="" />总应用数
-                </h4>
+                <h4><img :src="`/images/icon_app@${dpr}x.png`" alt="" />总应用数</h4>
                 <ul class="counts-numbers">
                   <li v-for="item in prodCounts">{{item}}</li>
                 </ul>
@@ -129,30 +113,15 @@
             </div>
             <ul class="counts-list">
               <li>
-                <h4>
-                  <img
-                    :src="`/images/icon_developer@${dpr}x.png`"
-                    alt=""
-                  />总开发人数
-                </h4>
+                <h4><img :src="`/images/icon_developer@${dpr}x.png`" alt="" />总开发人数</h4>
                 <strong>{{devCounts}}</strong>
               </li>
               <li>
-                <h4>
-                  <img
-                    :src="`/images/icon_game@${dpr}x.png`"
-                    alt=""
-                  />开发者大赛人数
-                </h4>
+                <h4><img :src="`/images/icon_game@${dpr}x.png`" alt="" />开发者大赛人数</h4>
                 <strong>378</strong>
               </li>
               <li>
-                <h4>
-                  <img
-                    :src="`/images/icon_customer@${dpr}x.png`"
-                    alt=""
-                  />客户数
-                </h4>
+                <h4><img :src="`/images/icon_customer@${dpr}x.png`" alt="" />客户数</h4>
                 <strong>6,800,000</strong>
               </li>
             </ul>
@@ -175,24 +144,15 @@
             </div>
           </div>
           <ul class="description-feature">
-            <li>
-              <img :src="`/images/icon_revenue@${dpr}x.png`" alt="" />增加营收
-            </li>
-            <li>
-              <img :src="`/images/icon_renown@${dpr}x.png`" alt="" />提高名声
-            </li>
-            <li>
-              <img :src="`/images/icon_growing@${dpr}x.png`" alt="" />助你成长
-            </li>
-            <li>
-              <img :src="`/images/icon_service@${dpr}x.png`" alt="" />为你服务
-            </li>
+            <li><img :src="`/images/icon_revenue@${dpr}x.png`" alt="" />增加营收</li>
+            <li><img :src="`/images/icon_renown@${dpr}x.png`" alt="" />提高名声</li>
+            <li><img :src="`/images/icon_growing@${dpr}x.png`" alt="" />助你成长</li>
+            <li><img :src="`/images/icon_service@${dpr}x.png`" alt="" />为你服务</li>
           </ul>
         </div>
       </main>
       <footer class="footer">
-        2020金蝶软件（中国）有限公司 粤ICP备05041751号-2 粤公网安备
-        44030502002324号
+        2020金蝶软件（中国）有限公司 粤ICP备05041751号-2 粤公网安备 44030502002324号
       </footer>
     </div>
     <!-- <script src="scripts/vue.min.js"></script> -->
@@ -233,7 +193,7 @@
         this.alpha = (6 + Math.random() * 4) / 10;
 
         // 颜色
-        const colorArr = ["#2185ED", "#04CCFD", "#03C7C7", "#9F6DFF"];
+        const colorArr = ['#2185ED', '#04CCFD', '#03C7C7', '#9F6DFF'];
         const color = colorArr[Math.floor(Math.random() * 4)];
         this.color = colorRgba(color, this.alpha);
       }
@@ -242,7 +202,7 @@
         ctx.save();
         ctx.fillStyle = this.color;
         if (/^bg_/.test(this.id) || (!/^bg_/.test(this.id) && !isLightUp)) {
-          ctx.shadowColor = "white";
+          ctx.shadowColor = 'white';
           ctx.shadowBlur = this.shadowBlur;
         }
         ctx.beginPath();
@@ -285,23 +245,20 @@
       const bgStars = [];
       const starNumber = 1000;
       const bgStarNumber = 200;
-      const background = document.querySelector(".background");
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
+      const background = document.querySelector('.background');
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio > 1 ? 2 : 1;
-      const tree = document.getElementById("tree");
-      const lottieContainer = document.getElementById("lottie");
-      const cloudStar = document.getElementById("cloudStar");
-      const lightUpBtn = document.getElementById("lightUpBtn");
+      const tree = document.getElementById('tree');
+      const lottieContainer = document.getElementById('lottie');
+      const cloudStar = document.getElementById('cloudStar');
+      const lightUpBtn = document.getElementById('lightUpBtn');
 
       // 加载生态树
       tree.src = `/images/eco_tree@${dpr}x.png`;
 
       // 设置背景图片
-      background.style.setProperty(
-        "--background-image",
-        `url(../images/aperture@${dpr}x.png)`
-      );
+      background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
 
       let rafG,
         rafP,
@@ -314,14 +271,9 @@
       tree.onload = init();
 
       // 窗口改变大小事件
-      window.addEventListener("resize", () => {
+      window.addEventListener('resize', () => {
         resizeCanvas();
         drawTree();
-        if (isLightUp) {
-          bgStars.forEach((star, index) => {
-            star.draw();
-          });
-        }
       });
 
       // 初始化函数
@@ -353,7 +305,7 @@
             bgStars.push(bgStar);
           }
         }
-        console.log("bgStarNumber: ", bgStars.length);
+        console.log('bgStarNumber: ', bgStars.length);
 
         // 初始化能量star
         for (let i = 0; i < starNumber; i++) {
@@ -363,9 +315,7 @@
           const spreadY = directionY ? 2 : 1;
 
           const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
-          const y =
-            directionY *
-            Math.floor(Math.random() * (background.offsetHeight - 100));
+          const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
 
           if (
             !(
@@ -382,7 +332,7 @@
           }
         }
 
-        console.log("starNumber: ", stars.length);
+        console.log('starNumber: ', stars.length);
 
         glink();
 
@@ -398,7 +348,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height
+          treeRect.height,
         );
       }
 
@@ -406,26 +356,20 @@
       function resizeCanvas() {
         WIDTH = document.documentElement.clientWidth;
         HEIGHT = document.documentElement.clientHeight;
-        console.log("ddddd:  ", background.offsetHeight);
-        canvas.setAttribute("width", WIDTH);
-        canvas.setAttribute("height", background.offsetHeight);
+        canvas.setAttribute('width', WIDTH);
+        canvas.setAttribute('height', background.offsetHeight);
       }
 
       // 根据tree的形状随机生成所有star的坐标
       function generateFousPos() {
         // tree的对star的吸附程度，值为0-1之间的值，0是完全不吸附，1是完全吸附。
-        const fit = 0.3;
+        const fit = 1;
         const starsLength = stars.length;
         const fitLength = Math.floor(starsLength * fit);
 
         const minX = canvas.width / 2 - treeRect.width / 2;
         const minY = canvas.height / 2 - treeRect.height / 2;
-        const data = ctx.getImageData(
-          minX,
-          minY,
-          treeRect.width,
-          treeRect.height * 0.7
-        ).data;
+        const data = ctx.getImageData(minX, minY, treeRect.width, treeRect.height * 0.7).data;
 
         const ableDataArr = [];
         for (var i = 0; i < data.length; i++) {
@@ -435,15 +379,12 @@
           }
         }
 
-        console.log("ableDataArr: ", ableDataArr, " fitLength: ", fitLength);
-
         for (let i = 0; i < fitLength; i++) {
           var w = Math.floor(treeRect.width);
           var num = ableDataArr[i];
           num = Math.floor(num / 4);
           var x = canvas.width / 2 - (w / 2 - (num % w));
-          var y =
-            canvas.height / 2 - (treeRect.height / 2 - Math.floor(num / w));
+          var y = canvas.height / 2 - (treeRect.height / 2 - Math.floor(num / w));
           stars[i].focusPos = { x, y };
         }
 
@@ -455,12 +396,7 @@
 
           const scrollTop = document.documentElement.scrollTop;
           const scrollLeft = document.documentElement.scrollLeft;
-          stars[i].focusPos = getEllipsePath(
-            x + scrollLeft,
-            y + scrollTop,
-            r1,
-            r2
-          );
+          stars[i].focusPos = getEllipsePath(x + scrollLeft, y + scrollTop, r1, r2);
         }
       }
 
@@ -542,20 +478,18 @@
         let sColor = sHex.toLowerCase();
         if (sColor && reg.test(sColor)) {
           if (sColor.length === 4) {
-            var sColorNew = "#";
+            var sColorNew = '#';
             for (let i = 1; i < 4; i += 1) {
-              sColorNew += sColor
-                .slice(i, i + 1)
-                .concat(sColor.slice(i, i + 1));
+              sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
             }
             sColor = sColorNew;
           }
           // 处理六位的颜色值
           var sColorChange = [];
           for (let i = 1; i < 7; i += 2) {
-            sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
+            sColorChange.push(parseInt('0x' + sColor.slice(i, i + 2)));
           }
-          return "rgba(" + sColorChange.join(",") + "," + alpha + ")";
+          return 'rgba(' + sColorChange.join(',') + ',' + alpha + ')';
         } else {
           return sColor;
         }
@@ -572,11 +506,11 @@
 
       // 点亮生态树按钮动效
       function lightEffect() {
-        axios.get("./scripts/data.json").then((response) => {
+        axios.get('./scripts/data.json').then((response) => {
           if (response.status === 200) {
             var params = {
               container: lottieContainer,
-              renderer: "svg",
+              renderer: 'svg',
               loop: true,
               autoplay: true,
               animationData: response.data,
@@ -587,7 +521,7 @@
       }
 
       new Vue({
-        el: "#app",
+        el: '#app',
         data: {
           devCounts: 9869,
           partnerCounts: 365,
@@ -604,7 +538,7 @@
           partnerIndex: 0,
           partnerInfo: {},
           isLightUp: false,
-          detailURL: "http://dev.kcssz.cloud.kingdee.com/index/partner/home",
+          detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {
           this.getEnery();
@@ -615,7 +549,7 @@
           // 查询伙伴列表
           getPartnerList: function () {
             axios
-              .get("/kd/ecos/partner/queryall")
+              .get('/kd/ecos/partner/queryall')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   this.partnerList = response.data.data;
@@ -629,17 +563,13 @@
           // 查询总开发者人数
           getAllCounts: function () {
             axios
-              .get("/kd/ecos/partner/getdevcounts")
+              .get('/kd/ecos/partner/getdevcounts')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
-                  const {
-                    devCounts,
-                    partnerCounts,
-                    prodCounts,
-                  } = response.data.data;
+                  const { devCounts, partnerCounts, prodCounts } = response.data.data;
                   this.devCounts = devCounts;
-                  this.partnerCounts = String(partnerCounts).split("");
-                  this.prodCounts = String(prodCounts).split("");
+                  this.partnerCounts = String(partnerCounts).split('');
+                  this.prodCounts = String(prodCounts).split('');
                 }
               })
               .catch((error) => {
@@ -650,7 +580,7 @@
           // 获取能量值
           getEnery: function () {
             axios
-              .get("/kd/ecos/production/geteneryvalue")
+              .get('/kd/ecos/production/geteneryvalue')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   this.eneryValue = response.data.data;
@@ -664,7 +594,7 @@
           // 增加能量值
           addEnery: function () {
             axios
-              .get("/kd/ecos/production/eneryvalue")
+              .get('/kd/ecos/production/eneryvalue')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   this.eneryValue = response.data.data;
@@ -692,11 +622,11 @@
               }, 400);
 
               // 去除点亮生态树动效，设置点亮状态
-              tree.style.visibility = "visible";
+              tree.style.visibility = 'visible';
               isLightUp = true;
               this.isLightUp = true;
               lottieContainer.parentElement.removeChild(lottieContainer);
-              cloudStar.className = "lightup";
+              cloudStar.className = 'lightup';
 
               // 伙伴列表轮播
               this.playPartnerList();
@@ -707,7 +637,7 @@
           },
 
           playPartnerList: function () {
-            console.log("currentRound: ", this.currentRound);
+            console.log('currentRound: ', this.currentRound);
             const roundNumber = 7;
             const currentPartnerList = [];
 
@@ -743,9 +673,7 @@
             ];
 
             for (let i = 0; i < 7; i++) {
-              const currrentPartner = this.partnerList[
-                this.currentRound * roundNumber + i
-              ];
+              const currrentPartner = this.partnerList[this.currentRound * roundNumber + i];
 
               // 设置伙伴球的位置
               const { left, top } = partnerPosArr[this.currentRound % 3][i];
@@ -777,7 +705,7 @@
             this.infoFadeIn = true;
             this.partnerInfo = this.currentPartnerList[this.partnerIndex];
             if (this.partnerIndex < 7) {
-              console.log("partnerIndex: ", this.partnerIndex);
+              console.log('partnerIndex: ', this.partnerIndex);
               this.partnerIndex += 1;
               this.timer1 = setTimeout(() => {
                 this.infoFadeIn = false;
@@ -790,8 +718,9 @@
               this.partnerIndex = 0;
 
               this.currentPartnerList.forEach((partner) => {
-                partner.left = treeRect.width * 0.6;
-                partner.top = treeRect.height * 0.5;
+                console.log('treeRect: ', treeRect);
+                partner.left = treeRect.width/2;
+                partner.top = treeRect.height/2;
               });
 
               this.timer3 = setTimeout(() => {
@@ -801,26 +730,30 @@
           },
 
           handleMouseEnter: function (index) {
-            console.log("partnerIndex: ", index);
-            this.timer1 && clearInterval(this.timer1);
-            this.timer2 && clearInterval(this.timer2);
-            this.timer3 && clearInterval(this.timer3);
-            this.timer1 = setTimeout(() => {
-              this.infoFadeIn = false;
-              this.partnerInfo = this.currentPartnerList[index];
-              this.timer2 = setTimeout(() => {
-                this.infoFadeIn = true;
-              }, 200);
-            }, 500);
+            console.log('partnerIndex: ', index);
+            if (this.fadeIn) {
+              this.timer1 && clearInterval(this.timer1);
+              this.timer2 && clearInterval(this.timer2);
+              this.timer3 && clearInterval(this.timer3);
+              this.timer1 = setTimeout(() => {
+                this.infoFadeIn = false;
+                this.partnerInfo = this.currentPartnerList[index];
+                this.timer2 = setTimeout(() => {
+                  this.infoFadeIn = true;
+                }, 200);
+              }, 500);
+            }
           },
 
           handleMouseLeave: function () {
-            this.timer1 && clearInterval(this.timer1);
-            this.timer2 && clearInterval(this.timer2);
-            this.infoFadeIn = false;
-            this.timer2 = setTimeout(() => {
-              this.playPartnerInfo();
-            }, 500);
+            if (this.fadeIn) {
+              this.timer1 && clearInterval(this.timer1);
+              this.timer2 && clearInterval(this.timer2);
+              this.infoFadeIn = false;
+              this.timer2 = setTimeout(() => {
+                this.playPartnerInfo();
+              }, 500);
+            }
           },
         },
       });

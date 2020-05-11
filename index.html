@@ -364,7 +364,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height,
+          treeRect.height
         );
       }
 
@@ -616,13 +616,13 @@
                     partnerList.splice(index, 1);
                   });
                   for (let i = 0; i < round; i++) {
-                    for(let j = 0; j < 7; j++) {
-                      if(j === 6 && level1PartnerList.length > 0) {
-                        partnerList.unshift(level1PartnerList.shift());
-                      } else if(j%2===1  && level2PartnerList.length > 0) {
-                        partnerList.unshift(level2PartnerList.shift());
-                      } else if(level3PartnerList.length > 0) {
-                        partnerList.unshift(level3PartnerList.shift());
+                    for (let j = 0; j < 7; j++) {
+                      if (j === 6 && level1PartnerList.length > 0) {
+                        partnerList.unshift(level1PartnerList.pop());
+                      } else if (j % 2 === 1 && level2PartnerList.length > 0) {
+                        partnerList.unshift(level2PartnerList.pop());
+                      } else if (level3PartnerList.length > 0) {
+                        partnerList.unshift(level3PartnerList.pop());
                       }
                     }
                   }
@@ -797,9 +797,8 @@
             } else {
               this.fadeIn = false;
               this.partnerIndex = 0;
-
+              
               this.currentPartnerList.forEach((partner) => {
-                console.log('treeRect: ', treeRect);
                 partner.left = treeRect.width / 2;
                 partner.top = treeRect.height / 2;
               });

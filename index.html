@@ -33,7 +33,7 @@
           <div class="partner-box">
             <ul class="partner-list">
               <li
-                v-for="item in currentPartnerList"
+                v-for="(item, index) in currentPartnerList"
                 @mouseenter="handleMouseEnter(index)"
                 @mouseleave="handleMouseLeave"
                 :class="`level${item.partnerLevel}${fadeIn ? ' fade-in' : ''}${item && partnerInfo && item.id === partnerInfo.id ? ' current' : ''}`"
@@ -79,7 +79,7 @@
             <img :src="`/images/icon_light@${dpr}x.png`" alt="点亮生态树" />
             点亮生态树
           </button>
-          <p v-if="!isLightUp" class="interactive-tips">
+          <p class="interactive-tips" v-if="!isLightUp">
             每位用户点亮生态树<br />即为生态树提供100的能量值
           </p>
           <div class="interactive-join">
@@ -97,7 +97,7 @@
             <div class="counts-energy">
               <h4>生态树能量值</h4>
               <strong ref="energyValue"></strong>
-              <span :class="`counts-energy-effect${isLightUp ? ' lightup' : ''}`">+100</span>
+              <span :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`" ref="addEnergyEffect">+100</span>
             </div>
             <div class="counts-cont">
               <div class="counts-partner">
@@ -157,8 +157,6 @@
         2020金蝶软件（中国）有限公司 粤ICP备05041751号-2 粤公网安备 44030502002324号
       </footer>
     </div>
-    <!-- <script src="scripts/vue.min.js"></script> -->
-    <!-- <script src="scripts/axios.min.js"></script> -->
     <script src="./scripts/lottie.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -246,7 +244,7 @@
 
       const stars = [];
       const bgStars = [];
-      const starNumber = 1000;
+      const starNumber = 2000;
       const bgStarNumber = 200;
       const background = document.querySelector('.background');
       const canvas = document.getElementById('canvas');
@@ -311,36 +309,46 @@
         }
         console.log('bgStarNumber: ', bgStars.length);
 
-        // 初始化能量star
-        for (let i = 0; i < starNumber; i++) {
-          const directionX = Math.random() < 0.5 ? -1 : 1;
-          const directionY = Math.random() < 0.5 ? -1 : 1;
-          const spreadX = directionX ? 2 : 1;
-          const spreadY = directionY ? 2 : 1;
+        if (isLightUp) {
+          // 显示星云
+          cloudStar.className = 'lightup';
 
-          const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
-          const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
+          // 背景星星闪烁
+          glink();
+        } else {
+          // 初始化能量star
+          for (let i = 0; i < starNumber; i++) {
+            const directionX = Math.random() < 0.5 ? -1 : 1;
+            const directionY = Math.random() < 0.5 ? -1 : 1;
+            const spreadX = directionX ? 2 : 1;
+            const spreadY = directionY ? 2 : 1;
 
-          if (
-            !(
-              x >= treeRect.x + scrollLeft - 20 &&
-              x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
-              y >= treeRect.y + scrollTop - 20 &&
-              y <= treeRect.y + treeRect.height + scrollTop + 20
-            ) &&
-            !(x > 0 && x < 200 && y > 0 && y < 100)
-          ) {
-            const star = new Star(`power_${i}`, x, y);
-            star.draw();
-            stars.push(star);
+            const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
+            const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
+
+            if (
+              !(
+                x >= treeRect.x + scrollLeft - 20 &&
+                x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
+                y >= treeRect.y + scrollTop - 20 &&
+                y <= treeRect.y + treeRect.height + scrollTop + 20
+              ) &&
+              !(x > 0 && x < 200 && y > 0 && y < 100)
+            ) {
+              const star = new Star(`power_${i}`, x, y);
+              star.draw();
+              stars.push(star);
+            }
           }
+
+          console.log('starNumber: ', stars.length);
+
+          // 星星闪烁
+          glink();
+
+          // 点亮生态树按钮动效
+          lightEffect();
         }
-
-        console.log('starNumber: ', stars.length);
-
-        glink();
-
-        lightEffect();
       }
 
       function drawTree() {
@@ -527,9 +535,9 @@
       new Vue({
         el: '#app',
         data: {
-          devCounts: 9869,
-          partnerCounts: 365,
-          prodCounts: 226,
+          devCounts: 0,
+          partnerCounts: 0,
+          prodCounts: 0,
           partnerList: [],
           currentRound: 0,
           fadeIn: false,
@@ -540,7 +548,7 @@
           currentPartnerList: [],
           partnerIndex: 0,
           partnerInfo: {},
-          isLightUp: false,
+          isLightUp: isLightUp,
           detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {
@@ -556,6 +564,12 @@
             format: 'd',
             theme: 'default',
           });
+
+          if(isLightUp) {
+            // 去掉增加能量值动效
+            const addEnergyEffect = this.$refs.addEnergyEffect;
+            addEnergyEffect.parentElement.removeChild(addEnergyEffect);
+          }
         },
         methods: {
           // 查询伙伴列表
@@ -565,6 +579,11 @@
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   this.partnerList = response.data.data;
+
+                  if (isLightUp) {
+                    // 伙伴列表轮播
+                    this.playPartnerList();
+                  }
                 }
               })
               .catch((error) => {

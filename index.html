@@ -97,7 +97,11 @@
             <div class="counts-energy">
               <h4>生态树能量值</h4>
               <strong ref="energyValue"></strong>
-              <span :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`" ref="addEnergyEffect">+100</span>
+              <span
+                :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`"
+                ref="addEnergyEffect"
+                >+100</span
+              >
             </div>
             <div class="counts-cont">
               <div class="counts-partner">
@@ -565,7 +569,7 @@
             theme: 'default',
           });
 
-          if(isLightUp) {
+          if (isLightUp) {
             // 去掉增加能量值动效
             const addEnergyEffect = this.$refs.addEnergyEffect;
             addEnergyEffect.parentElement.removeChild(addEnergyEffect);
@@ -578,7 +582,55 @@
               .get('/kd/ecos/partner/queryall')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
-                  this.partnerList = response.data.data;
+                  const partnerList = response.data.data;
+                  const level1PartnerList = [];
+                  const level2PartnerList = [];
+                  const level3PartnerList = [];
+                  const deleteArr = [];
+                  const round = 3;
+
+                  for (let i = 0; i < partnerList.length; i++) {
+                    const partner = partnerList[i];
+                    if (partner.partnerLevel == 1 && level1PartnerList.length < round) {
+                      level1PartnerList.push(partner);
+                      deleteArr.push(i);
+                    }
+                    if (partner.partnerLevel == 2 && level2PartnerList.length < round * 3) {
+                      level2PartnerList.push(partner);
+                      deleteArr.push(i);
+                    }
+                    if (partner.partnerLevel == 3 && level3PartnerList.length < round * 3) {
+                      level3PartnerList.push(partner);
+                      deleteArr.push(i);
+                    }
+                    if (
+                      level1PartnerList.length === round &&
+                      level2PartnerList.length === round * 3 &&
+                      level3PartnerList.length === round * 3
+                    ) {
+                      break;
+                    }
+                  }
+
+                  deleteArr.forEach((index) => {
+                    partnerList.splice(index, 1);
+                  });
+
+                  console.log(level1PartnerList.length, level2PartnerList.length, level3PartnerList.length, partnerList.length);
+
+                  for (let i = 0; i < round; i++) {
+                    for(let j = 0; j < 7; j++) {
+                      if(j === 0) {
+                        partnerList.unshift(level1PartnerList[i]);
+                      } else if(j%2==1) {
+                        partnerList.unshift(level2PartnerList[i*(j*2-1)]);
+                      } else {
+
+                      }
+                    }
+                  }
+
+                  this.partnerList = partnerList;
 
                   if (isLightUp) {
                     // 伙伴列表轮播
@@ -652,7 +704,7 @@
                 bgGlink();
               }, 400);
 
-              // 去除点亮生态树动效，设置点亮状态
+              // 去除点亮生态树按钮动效，设置点亮状态
               tree.style.visibility = 'visible';
               isLightUp = true;
               this.isLightUp = true;
@@ -662,7 +714,7 @@
               // 伙伴列表轮播
               this.playPartnerList();
 
-              //增加能量值
+              // 增加能量值
               this.addEnergy();
             }
           },

@@ -18,23 +18,18 @@ body {
 }
 
 @font-face {
-  font-family: "KINGDEE";
-  src: url("../fonts/KINGDEE-Regular.otf");
+  font-family: "KINGDEEKB";
+  src: url("../fonts/KINGDEEKB-Regular.otf");
 }
 
 @font-face {
-  font-family: "KINGDEE-KBB";
-  src: url("../fonts/KINGDEE-KBB.otf");
+  font-family: "KINGDEEKB-Bold";
+  src: url("../fonts/KINGDEEKB-Bold.otf");
 }
 
 @font-face {
-  font-family: "KINGDEE-Light";
-  src: url("../fonts/KINGDEE-Light.otf");
-}
-
-@font-face {
-  font-family: "KINGDEE-R";
-  src: url("../fonts/KINGDEE-R.otf");
+  font-family: "KINGDEEKB-Light";
+  src: url("../fonts/KINGDEEKB-Light.otf");
 }
 
 @-webkit-keyframes shinePurple {
@@ -124,6 +119,52 @@ body {
   100% {
     -webkit-box-shadow: 2px 2px 10px 1px #2486ee, -2px -2px 10px 1px #2486ee;
             box-shadow: 2px 2px 10px 1px #2486ee, -2px -2px 10px 1px #2486ee;
+  }
+}
+
+@-webkit-keyframes lightup {
+  0% {
+              opacity: 0;
+    -webkit-transform: translateY(-2rem) scale(0.5);
+            transform: translateY(-2rem) scale(0.5);
+  }
+  20% {
+            opacity: 1;
+  -webkit-transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1);
+  }
+  80% {
+            opacity: 1;
+  -webkit-transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-2rem) scale(0.5);
+            transform: translateY(-2rem) scale(0.5);
+  }
+}
+
+@keyframes lightup {
+  0% {
+              opacity: 0;
+    -webkit-transform: translateY(-2rem) scale(0.5);
+            transform: translateY(-2rem) scale(0.5);
+  }
+  20% {
+            opacity: 1;
+  -webkit-transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1);
+  }
+  80% {
+            opacity: 1;
+  -webkit-transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-2rem) scale(0.5);
+            transform: translateY(-2rem) scale(0.5);
   }
 }
 
@@ -365,14 +406,14 @@ body {
   z-index: 1;
   position: absolute;
   top: 50%;
-  right: -40rem;
+  right: -50rem;
   width: 40rem;
   min-height: 17rem;
   border-radius: 0.8rem;
   border-radius: 8px;
   border: 1px solid;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  -webkit-transform: translateY(-60%);
+          transform: translateY(-60%);
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
   opacity: 0;
@@ -380,7 +421,8 @@ body {
 
 .content .interactive .partner-box .partner-info.fade-in {
   opacity: 1;
-  right: -50rem;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
   -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
 }
@@ -644,10 +686,24 @@ body {
 
 .content .interactive .interactive-counts .counts-energy strong {
   font-size: 4.8rem;
-  font-family: KINGDEE-KBB, KINGDEE;
+  font-family: KINGDEEKB-Bold, KINGDEEKB;
   font-weight: normal;
   line-height: 4.8rem;
   letter-spacing: 0.4rem;
+}
+
+.content .interactive .interactive-counts .counts-energy .counts-energy-effect {
+  display: inline-block;
+  font-family: KINGDEEKB;
+  color: #01e6ff;
+  font-size: 2.4rem;
+  line-height: 2;
+  vertical-align: bottom;
+  opacity: 0;
+}
+
+.content .interactive .interactive-counts .counts-energy .counts-energy-effect.lightup {
+  animation: lightup 3s;
 }
 
 .content .interactive .interactive-counts .counts-cont {
@@ -679,7 +735,7 @@ body {
   width: 3rem;
   height: 5.8rem;
   color: #01e6ff;
-  font-family: KINGDEE-KBB, KINGDEE;
+  font-family: KINGDEEKB-Bold, KINGDEEKB;
   font-size: 4rem;
   font-weight: normal;
   line-height: 5.8rem;
@@ -703,7 +759,7 @@ body {
 
 .content .interactive .interactive-counts .counts-list li strong {
   font-size: 32px;
-  font-family: KINGDEE-KBB, KINGDEE;
+  font-family: KINGDEEKB-Bold, KINGDEEKB;
   font-weight: normal;
   color: #2486ee;
   line-height: 48px;

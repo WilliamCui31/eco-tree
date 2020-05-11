@@ -6,6 +6,7 @@
     <title>苍穹生态树</title>
     <link rel="stylesheet" href="styles/normalize.css" />
     <link rel="stylesheet" href="styles/sky-tree.css" />
+    <link rel="stylesheet" href="styles/odometer-theme-default.css" />
   </head>
   <body>
     <div class="background">
@@ -32,7 +33,7 @@
           <div class="partner-box">
             <ul class="partner-list">
               <li
-                v-for="(item, index) in currentPartnerList"
+                v-for="item in currentPartnerList"
                 @mouseenter="handleMouseEnter(index)"
                 @mouseleave="handleMouseLeave"
                 :class="`level${item.partnerLevel}${fadeIn ? ' fade-in' : ''}${item && partnerInfo && item.id === partnerInfo.id ? ' current' : ''}`"
@@ -95,7 +96,8 @@
           <div class="interactive-counts">
             <div class="counts-energy">
               <h4>生态树能量值</h4>
-              <strong>{{eneryValue}}</strong>
+              <strong ref="energyValue"></strong>
+              <span :class="`counts-energy-effect${isLightUp ? ' lightup' : ''}`">+100</span>
             </div>
             <div class="counts-cont">
               <div class="counts-partner">
@@ -160,6 +162,7 @@
     <script src="./scripts/lottie.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
     <script>
       function Star(id, x, y) {
         // id
@@ -260,7 +263,8 @@
       // 设置背景图片
       background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
 
-      let rafG,
+      let od,
+        rafG,
         rafP,
         WIDTH,
         HEIGHT,
@@ -526,7 +530,6 @@
           devCounts: 9869,
           partnerCounts: 365,
           prodCounts: 226,
-          eneryValue: 2020,
           partnerList: [],
           currentRound: 0,
           fadeIn: false,
@@ -541,9 +544,18 @@
           detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {
-          this.getEnery();
+          this.getEnergy();
           this.getAllCounts();
           this.getPartnerList();
+        },
+        mounted() {
+          od = new Odometer({
+            el: this.$refs.energyValue,
+            value: 268,
+            duration: 1000,
+            format: 'd',
+            theme: 'default',
+          });
         },
         methods: {
           // 查询伙伴列表
@@ -578,12 +590,12 @@
           },
 
           // 获取能量值
-          getEnery: function () {
+          getEnergy: function () {
             axios
               .get('/kd/ecos/production/geteneryvalue')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
-                  this.eneryValue = response.data.data;
+                  od.update(response.data.data);
                 }
               })
               .catch((error) => {
@@ -592,12 +604,12 @@
           },
 
           // 增加能量值
-          addEnery: function () {
+          addEnergy: function () {
             axios
               .get('/kd/ecos/production/eneryvalue')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
-                  this.eneryValue = response.data.data;
+                  od.update(response.data.data);
                 }
               })
               .catch((error) => {
@@ -632,7 +644,7 @@
               this.playPartnerList();
 
               //增加能量值
-              this.addEnery();
+              this.addEnergy();
             }
           },
 
@@ -719,8 +731,8 @@
 
               this.currentPartnerList.forEach((partner) => {
                 console.log('treeRect: ', treeRect);
-                partner.left = treeRect.width/2;
-                partner.top = treeRect.height/2;
+                partner.left = treeRect.width / 2;
+                partner.top = treeRect.height / 2;
               });
 
               this.timer3 = setTimeout(() => {

@@ -652,7 +652,7 @@ body {
 
 .content .interactive .interactive-counts {
   position: absolute;
-  top: 18rem;
+  top: 27rem;
   left: 50%;
   -webkit-transform: translateX(-250%);
           transform: translateX(-250%);
@@ -709,9 +709,8 @@ body {
 }
 
 .content .interactive .interactive-counts .counts-cont {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  margin-left: 1.6rem;
+  margin-right: 6.6rem;
 }
 
 .content .interactive .interactive-counts .counts-cont h4 {
@@ -720,8 +719,7 @@ body {
 }
 
 .content .interactive .interactive-counts .counts-cont .counts-partner {
-  margin-left: 1.6rem;
-  margin-right: 6.6rem;
+  margin: 4rem 0;
 }
 
 .content .interactive .interactive-counts .counts-cont .counts-numbers {

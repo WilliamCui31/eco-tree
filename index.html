@@ -110,27 +110,13 @@
                   <li v-for="item in partnerCounts">{{item}}</li>
                 </ul>
               </div>
-              <div class="counts-app">
-                <h4><img :src="`./images/icon_app@${dpr}x.png`" alt="" />总应用数</h4>
+              <div class="counts-developer">
+                <h4><img :src="`./images/icon_developer@${dpr}x.png`" alt="" />总开发者人数</h4>
                 <ul class="counts-numbers">
-                  <li v-for="item in prodCounts">{{item}}</li>
+                  <li v-for="item in devCounts">{{item}}</li>
                 </ul>
               </div>
             </div>
-            <ul class="counts-list">
-              <li>
-                <h4><img :src="`./images/icon_developer@${dpr}x.png`" alt="" />总开发人数</h4>
-                <strong>{{devCounts}}</strong>
-              </li>
-              <li>
-                <h4><img :src="`./images/icon_game@${dpr}x.png`" alt="" />开发者大赛人数</h4>
-                <strong>378</strong>
-              </li>
-              <li>
-                <h4><img :src="`./images/icon_customer@${dpr}x.png`" alt="" />客户数</h4>
-                <strong>6,800,000</strong>
-              </li>
-            </ul>
           </div>
         </div>
         <div class="description">
@@ -263,7 +249,7 @@
       tree.src = `./images/eco_tree@${dpr}x.png`;
 
       // 设置背景图片
-      background.style.setProperty('--background-image', `url(.../images/aperture@${dpr}x.png)`);
+      background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
 
       let od,
         rafG,
@@ -364,7 +350,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height
+          treeRect.height,
         );
       }
 
@@ -541,7 +527,6 @@
         data: {
           devCounts: 0,
           partnerCounts: 0,
-          prodCounts: 0,
           partnerList: [],
           currentRound: 0,
           fadeIn: false,
@@ -648,8 +633,8 @@
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   const { devCounts, partnerCounts, prodCounts } = response.data.data;
-                  this.devCounts = devCounts;
-                  this.partnerCounts = String(partnerCounts).split('');
+                  this.devCounts = [1, 0, 0, 0, 0, '+'] || devCounts;
+                  this.partnerCounts = [5, 0, 0, 0, '+'] || String(partnerCounts).split('');
                   this.prodCounts = String(prodCounts).split('');
                 }
               })
@@ -797,7 +782,7 @@
             } else {
               this.fadeIn = false;
               this.partnerIndex = 0;
-              
+
               this.currentPartnerList.forEach((partner) => {
                 partner.left = treeRect.width / 2;
                 partner.top = treeRect.height / 2;

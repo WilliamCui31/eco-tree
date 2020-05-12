@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>苍穹生态树</title>
-    <link rel="stylesheet" href="styles/normalize.css" />
-    <link rel="stylesheet" href="styles/sky-tree.css" />
-    <link rel="stylesheet" href="styles/odometer-theme-default.css" />
+    <link rel="stylesheet" href="./styles/normalize.css" />
+    <link rel="stylesheet" href="./styles/eco-tree.css" />
+    <link rel="stylesheet" href="./styles/odometer-theme-default.css" />
   </head>
   <body>
     <div class="background">
@@ -15,17 +15,17 @@
       </div>
       <canvas id="canvas"></canvas>
       <div class="cloud-container">
-        <img id="cloudStar" class="cloud-star" src="/images/cloud_star.svg" alt="金蝶云生态树" />
+        <img id="cloudStar" class="cloud-star" src="./images/cloud_star.svg" alt="金蝶云生态树" />
       </div>
       <div id="lottie"></div>
     </div>
     <div id="app">
       <header class="header">
         <div class="header-kingdee">
-          <img :src="`/images/logo_kingdee@${dpr}x.png`" alt="kingdee logo" />
+          <img :src="`./images/logo_kingdee@${dpr}x.png`" alt="kingdee logo" />
         </div>
         <div class="header-ecotree">
-          <img :src="`/images/logo_ecotree@${dpr}x.png`" alt="ecotree logo" />
+          <img :src="`./images/logo_ecotree@${dpr}x.png`" alt="ecotree logo" />
         </div>
       </header>
       <main class="content">
@@ -53,7 +53,7 @@
               <h3 class="partner-level">
                 <img
                   v-if="partnerInfo.partnerLevel"
-                  :src="`/images/icon_partner_level${partnerInfo.partnerLevel}@${dpr}x.png`"
+                  :src="`./images/icon_partner_level${partnerInfo.partnerLevel}@${dpr}x.png`"
                   alt="伙伴等级"
                 />
                 ISV生态伙伴
@@ -76,7 +76,7 @@
             </div>
           </div>
           <button class="interactive-light" v-if="!isLightUp" @click="handleLightUp">
-            <img :src="`/images/icon_light@${dpr}x.png`" alt="点亮生态树" />
+            <img :src="`./images/icon_light@${dpr}x.png`" alt="点亮生态树" />
             点亮生态树
           </button>
           <p class="interactive-tips" v-if="!isLightUp">
@@ -87,7 +87,7 @@
               扫码加入
             </a>
             <div class="interactive-qrcode">
-              <img src="/images/qrcode.png" alt="金蝶云生态树" />
+              <img src="./images/qrcode.png" alt="金蝶云生态树" />
             </div>
             <a :href="detailURL" target="_blank">
               了解详情
@@ -105,13 +105,13 @@
             </div>
             <div class="counts-cont">
               <div class="counts-partner">
-                <h4><img :src="`/images/icon_partner@${dpr}x.png`" alt="" />总伙伴数</h4>
+                <h4><img :src="`./images/icon_partner@${dpr}x.png`" alt="" />总伙伴数</h4>
                 <ul class="counts-numbers">
                   <li v-for="item in partnerCounts">{{item}}</li>
                 </ul>
               </div>
               <div class="counts-app">
-                <h4><img :src="`/images/icon_app@${dpr}x.png`" alt="" />总应用数</h4>
+                <h4><img :src="`./images/icon_app@${dpr}x.png`" alt="" />总应用数</h4>
                 <ul class="counts-numbers">
                   <li v-for="item in prodCounts">{{item}}</li>
                 </ul>
@@ -119,15 +119,15 @@
             </div>
             <ul class="counts-list">
               <li>
-                <h4><img :src="`/images/icon_developer@${dpr}x.png`" alt="" />总开发人数</h4>
+                <h4><img :src="`./images/icon_developer@${dpr}x.png`" alt="" />总开发人数</h4>
                 <strong>{{devCounts}}</strong>
               </li>
               <li>
-                <h4><img :src="`/images/icon_game@${dpr}x.png`" alt="" />开发者大赛人数</h4>
+                <h4><img :src="`./images/icon_game@${dpr}x.png`" alt="" />开发者大赛人数</h4>
                 <strong>378</strong>
               </li>
               <li>
-                <h4><img :src="`/images/icon_customer@${dpr}x.png`" alt="" />客户数</h4>
+                <h4><img :src="`./images/icon_customer@${dpr}x.png`" alt="" />客户数</h4>
                 <strong>6,800,000</strong>
               </li>
             </ul>
@@ -138,11 +138,11 @@
             以客户价值为中心，给生态伙伴以舞台，丰富行业场景应用
           </h2>
           <div class="description-stucture">
-            <img :src="`/images/cloud_eco@${dpr}x.png`" alt="云生态" />
+            <img :src="`./images/cloud_eco@${dpr}x.png`" alt="云生态" />
           </div>
           <div class="description-brand">
             <div class="description-brand-qrcode">
-              <img src="/images/qrcode.png" alt="金蝶云生态" />
+              <img src="./images/qrcode.png" alt="金蝶云生态" />
             </div>
             <div class="description-brand-text">
               <span>扫码加入我们</span>
@@ -150,10 +150,10 @@
             </div>
           </div>
           <ul class="description-feature">
-            <li><img :src="`/images/icon_revenue@${dpr}x.png`" alt="" />增加营收</li>
-            <li><img :src="`/images/icon_renown@${dpr}x.png`" alt="" />提高名声</li>
-            <li><img :src="`/images/icon_growing@${dpr}x.png`" alt="" />助你成长</li>
-            <li><img :src="`/images/icon_service@${dpr}x.png`" alt="" />为你服务</li>
+            <li><img :src="`./images/icon_revenue@${dpr}x.png`" alt="" />增加营收</li>
+            <li><img :src="`./images/icon_renown@${dpr}x.png`" alt="" />提高名声</li>
+            <li><img :src="`./images/icon_growing@${dpr}x.png`" alt="" />助你成长</li>
+            <li><img :src="`./images/icon_service@${dpr}x.png`" alt="" />为你服务</li>
           </ul>
         </div>
       </main>
@@ -260,10 +260,10 @@
       const lightUpBtn = document.getElementById('lightUpBtn');
 
       // 加载生态树
-      tree.src = `/images/eco_tree@${dpr}x.png`;
+      tree.src = `./images/eco_tree@${dpr}x.png`;
 
       // 设置背景图片
-      background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
+      background.style.setProperty('--background-image', `url(.../images/aperture@${dpr}x.png)`);
 
       let od,
         rafG,

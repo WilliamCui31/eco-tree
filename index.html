@@ -71,8 +71,46 @@
                 <h3 class="partner-title">
                   {{partnerInfo.name}}
                 </h3>
-                <span class="partner-cloud">{{partnerInfo.productName}}</span>
               </header>
+              <p class="partner-detail">
+                深圳市莫亚科技有限公司（以下简称"莫亚科技"）于2010年在深圳正式成立，注册资金500万人民币，目前拥有深圳、长沙两大技术研发中心。莫亚科技是国内一流的金蝶EAS平台软件定制及服务提供商，金蝶钻石级的交付合作伙伴。
+              </p>
+              <div class="partner-app">
+                <h3 class="partner-app-title">
+                  <svg
+                    width="16px"
+                    height="16px"
+                    viewBox="0 0 16 16"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+                    <title>应用</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs>
+                      <rect id="path-1" x="0" y="0" width="16" height="16"></rect>
+                    </defs>
+                    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="形状结合备份-2">
+                        <mask id="mask-2" fill="white">
+                          <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="蒙版"></g>
+                        <path
+                          d="M13.7040046,9.70304636 L16.815861,12.8149028 C17.0613797,13.0604214 17.0613797,13.4584859 16.815861,13.7040046 L13.7040046,16.815861 C13.4584859,17.0613797 13.0604214,17.0613797 12.8149028,16.815861 L9.70304636,13.7040046 C9.45752767,13.4584859 9.45752767,13.0604214 9.70304636,12.8149028 L12.8149028,9.70304636 C13.0604214,9.45752767 13.4584859,9.45752767 13.7040046,9.70304636 Z M7.28689932,9.80165905 C7.63411518,9.80165905 7.91558925,10.0831331 7.91558925,10.430349 L7.91558925,16.0885584 C7.91558925,16.4357742 7.63411518,16.7172483 7.28689932,16.7172483 L1.62868993,16.7172483 C1.28147407,16.7172483 1,16.4357742 1,16.0885584 L1,10.430349 C1,10.0831331 1.28147407,9.80165905 1.62868993,9.80165905 L7.28689932,9.80165905 Z M7.28689932,1 C7.63411518,1 7.91558925,1.28147407 7.91558925,1.62868993 L7.91558925,7.28689932 C7.91558925,7.63411518 7.63411518,7.91558925 7.28689932,7.91558925 L1.62868993,7.91558925 C1.28147407,7.91558925 1,7.63411518 1,7.28689932 L1,1.62868993 C1,1.28147407 1.28147407,1 1.62868993,1 L7.28689932,1 Z M16.0885584,1 C16.4357742,1 16.7172483,1.28147407 16.7172483,1.62868993 L16.7172483,7.28689932 C16.7172483,7.63411518 16.4357742,7.91558925 16.0885584,7.91558925 L10.430349,7.91558925 C10.0831331,7.91558925 9.80165905,7.63411518 9.80165905,7.28689932 L9.80165905,1.62868993 C9.80165905,1.28147407 10.0831331,1 10.430349,1 L16.0885584,1 Z"
+                          fill="#0AD5D4"
+                          mask="url(#mask-2)"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg>
+                  {{partnerInfo.productName || '默认应用'}}
+                </h3>
+                <p class="partner-app-detail">
+                  基于移动互联网时代的在线订单跟踪处理几企业内部流程管理于一体的企业Saas服务平台，致力于帮助企业快速构建自己专属的在线销售。
+                </p>
+              </div>
             </div>
           </div>
           <button class="interactive-light" v-if="!isLightUp" @click="handleLightUp">
@@ -219,8 +257,8 @@
       };
 
       Star.prototype.moveToTree = function () {
-        const vx = (this.focusPos.x - this.x) * 0.18;
-        const vy = (this.focusPos.y - this.y) * 0.18;
+        const vx = (this.focusPos.x - this.x) * 0.08;
+        const vy = (this.focusPos.y - this.y) * 0.08;
         if (this.x !== this.focusPos.x) this.x += vx;
         if (this.y !== this.focusPos.y) this.y += vy;
         this.draw();
@@ -685,7 +723,7 @@
               setTimeout(() => {
                 cancelAnimationFrame(rafP);
                 bgGlink();
-              }, 400);
+              }, 800);
 
               // 去除点亮生态树按钮动效，设置点亮状态
               tree.style.visibility = 'visible';

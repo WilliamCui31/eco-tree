@@ -593,6 +593,7 @@ body {
 }
 
 .content .interactive .partner-box .partner-info .partner-app .partner-app-detail {
+  margin: 0;
   line-height: 2.4rem;
   font-size: 1.4rem;
 }

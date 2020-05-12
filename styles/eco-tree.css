@@ -378,11 +378,11 @@ body {
 .content .interactive .partner-box .partner-info {
   position: absolute;
   top: 50%;
-  right: -48rem;
-  width: 40rem;
+  right: -40rem;
+  width: 34rem;
   min-height: 17rem;
   border-radius: 0.8rem;
-  border-radius: 8px;
+  border-radius: 0.4rem;
   border: 1px solid;
   -webkit-transform: translateY(-70%);
   transform: translateY(-70%);
@@ -494,26 +494,29 @@ body {
 }
 
 .content .interactive .partner-box .partner-info .partner-header .partner-title {
-  line-height: 7.2rem;
+  display: flex;
+  height: 7.2rem;
+  align-items: center;
+  align-content: center;
   font-weight: normal;
   font-size: 1.6rem;
+
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
 .content .interactive .partner-box .partner-info .partner-detail {
-  margin: 1.2rem 2rem 2rem;
+  margin: 1.2rem 2rem;
   line-height: 2.2rem;
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .content .interactive .partner-box .partner-info .partner-app {
   margin: 0 2rem;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   border-top: 1px solid;
 }
 
@@ -562,9 +565,10 @@ body {
 }
 
 .content .interactive .partner-box .partner-info .partner-app .partner-app-detail {
-  margin: 1rem 0 0;
+  margin: 0.8rem 0 0;
   line-height: 2.4rem;
   font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .content .interactive .interactive-light {

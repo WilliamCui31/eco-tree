@@ -23,11 +23,33 @@
       <main class="content">
         <div class="interactive">
           <div class="partner-box">
+            <div class="interactive-counts">
+              <div class="interactive-slogan">
+                <img :src="`./images/slogan@${dpr}x.png`" alt="金蝶云生态" />
+              </div>
+              <div class="counts-energy">
+                <h4>生态树能量值</h4>
+                <strong ref="energyValue"></strong>
+                <span
+                  :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`"
+                  ref="addEnergyEffect"
+                  >+100</span
+                >
+              </div>
+              <div class="counts-text">
+                种下生态树，万物竞长，聚力生态<br />
+                金蝶愿与全球生态伙伴<br />
+                携手打造共享，共赢，共生的企业云生态<br />
+                祈愿“<strong>生态树</strong>”<br />
+                枝繁叶茂，硕果累累<br />
+              </div>
+              <div class="counts-qrcode"></div>
+            </div>
             <ul class="partner-list">
               <li
-                v-for="(item, index) in currentPartnerList"
-                @mouseenter="handleMouseEnter(index)"
+                @mouseover="handleMouseEnter(index)"
                 @mouseleave="handleMouseLeave"
+                v-for="(item, index) in currentPartnerList"
                 :class="`level${item.partnerLevel}${fadeIn ? ' fade-in' : ''}${item && partnerInfo && item.id === partnerInfo.id ? ' current' : ''}`"
                 :style="`left: ${item.left/10}rem; top: ${item.top/10}rem; width: ${item.size/10}rem; height: ${item.size/10}rem;`"
               >
@@ -36,6 +58,14 @@
                   :src="'/api/public/file/'+item.partnerLogo"
                   :alt="item.name"
                 />
+                <div
+                  v-if="!item.partnerLogo && item.partnerShortName"
+                  class="partner-name"
+                  :style="`font-size: ${item.size/45}rem`"
+                >
+                  <strong>{{item.partnerShortName.split('_')[0]}}</strong>
+                  <span>{{item.partnerShortName.split('_')[1]}}</span>
+                </div>
               </li>
             </ul>
             <div
@@ -49,25 +79,34 @@
                   alt="伙伴等级"
                 />
                 ISV生态伙伴
-                <!-- {{partnerInfo.partnerLevel == 1 ? '生态战略伙伴' :
-                partnerInfo.partnerLevel == 2 ? '生态金牌伙伴' : '生态伙伴'}} -->
               </h3>
               <header class="partner-header">
                 <div class="partner-avatar">
                   <img
                     v-if="partnerInfo.partnerLogo"
                     :src="'/api/public/file/'+partnerInfo.partnerLogo"
-                    :alt="partnerInfo.name"
+                    :alt="partnerInfo.partnerName"
                   />
+                  <div
+                    v-if="!partnerInfo.partnerLogo && partnerInfo.partnerShortName"
+                    class="partner-name"
+                    :style="`font-size: ${72/38}rem`"
+                  >
+                    <strong>{{partnerInfo.partnerShortName.split('_')[0]}}</strong>
+                    <span>{{partnerInfo.partnerShortName.split('_')[1]}}</span>
+                  </div>
                 </div>
                 <h3 class="partner-title">
-                  {{partnerInfo.name}}
+                  {{partnerInfo.partnerName}}
                 </h3>
               </header>
               <p class="partner-detail">
-                深圳市莫亚科技有限公司（以下简称"莫亚科技"）于2010年在深圳正式成立，注册资金500万人民币，目前拥有深圳、长沙两大技术研发中心。莫亚科技是国内一流的金蝶EAS平台软件定制及服务提供商，金蝶钻石级的交付合作伙伴。
+                {{partnerInfo.partnerDetail}}
               </p>
-              <div class="partner-app">
+              <div
+                v-if="partnerInfo.productionList && partnerInfo.productionList.length >0"
+                class="partner-app"
+              >
                 <h3 class="partner-app-title">
                   <svg
                     width="16px"
@@ -96,10 +135,10 @@
                       </g>
                     </g>
                   </svg>
-                  {{partnerInfo.productName || '默认应用'}}
+                  {{partnerInfo.productName}}
                 </h3>
                 <p class="partner-app-detail">
-                  基于移动互联网时代的在线订单跟踪处理几企业内部流程管理于一体的企业Saas服务平台，致力于帮助企业快速构建自己专属的在线销售。
+                  {{partnerInfo.productInfo}}
                 </p>
               </div>
             </div>
@@ -111,146 +150,12 @@
           <p class="interactive-tips" v-if="!isLightUp">
             每位用户点亮生态树<br />即为生态树提供100的能量值
           </p>
-          <div class="interactive-counts">
-            <div class="interactive-slogan"><img :src="`./images/slogan@${dpr}x.png`" alt="金蝶云生态" /></div>
-            <div class="counts-energy">
-              <h4>生态树能量值</h4>
-              <strong ref="energyValue"></strong>
-              <span
-                :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`"
-                ref="addEnergyEffect"
-                >+100</span
-              >
-            </div>
-            <!-- <div class="counts-cont">
-              <div class="counts-partner">
-                <h4>
-                  <svg
-                    width="18px"
-                    height="18px"
-                    viewBox="0 0 18 18"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                  >
-                    <title>伙伴数</title>
-                    <desc>Created with Sketch.</desc>
-                    <g
-                      id="页面-1"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                      opacity="0.800000012"
-                    >
-                      <g id="画板" transform="translate(-1593.000000, -199.000000)" fill="#FFFFFF">
-                        <g id="编组-13备份-4" transform="translate(1593.000000, 199.000000)">
-                          <path
-                            d="M12.24,1.44 C14.2282251,1.44 15.84,3.0517749 15.84,5.04 C15.84,6.39170264 15.0950354,7.56940948 13.9932817,8.18494518 C16.3172404,8.90550093 18,11.0218275 18,13.5202857 C18,14.3813466 17.1071599,15.0026928 15.8186032,15.3843245 C15.8333682,15.2748509 15.84,15.1623674 15.84,15.0476364 L15.8372189,14.8289334 C15.7631922,11.9205575 14.2168092,9.32526209 11.8523067,7.82597465 L11.79648,7.79112 L11.877924,7.68181038 C12.5660823,6.72459197 12.96,5.5573556 12.96,4.32 C12.96,3.27131641 12.6797522,2.2880882 12.1900638,1.44112266 L12.24,1.44 L12.24,1.44 Z"
-                            id="形状结合"
-                          ></path>
-                          <path
-                            d="M7.2,0 C9.58587012,0 11.52,1.93412988 11.52,4.32 C11.52,6.00926858 10.5504071,7.4720766 9.13738147,8.18226373 C12.1731268,9.01888701 14.4,11.7758183 14.4,15.0476364 C14.4,18.9841212 0,18.9841212 0,15.0476364 C0,11.7758183 2.22687322,9.01888701 5.26204309,8.18116156 C3.84959295,7.4720766 2.88,6.00926858 2.88,4.32 C2.88,1.93412988 4.81412988,0 7.2,0 Z"
-                            id="形状结合"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                  总伙伴数
-                </h4>
-                <strong class="counts-numbers">5000+</strong>
-              </div>
-              <div class="counts-developer">
-                <h4>
-                  <svg
-                    width="18px"
-                    height="18px"
-                    viewBox="0 0 18 18"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                  >
-                    <title>开发者人数</title>
-                    <desc>Created with Sketch.</desc>
-                    <defs>
-                      <rect id="path-1" x="0" y="0" width="18" height="18"></rect>
-                    </defs>
-                    <g
-                      id="页面-1"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                      opacity="0.800000012"
-                    >
-                      <g id="画板" transform="translate(-1593.000000, -301.000000)">
-                        <g
-                          id="矩形-+-路径-60备份-+-路径-60备份-2-+-路径-17-蒙版备份"
-                          transform="translate(1593.000000, 301.000000)"
-                        >
-                          <mask id="mask-2" fill="white">
-                            <use xlink:href="#path-1"></use>
-                          </mask>
-                          <g id="蒙版"></g>
-                          <path
-                            d="M17,0 C17.5522847,-1.01453063e-16 18,0.44771525 18,1 L18,13 C18,13.5522847 17.5522847,14 17,14 L1,14 C0.44771525,14 6.76353751e-17,13.5522847 0,13 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 L17,0 Z M11.0110913,3.46966991 C10.7448247,3.73593648 10.7206187,4.15260016 10.9384731,4.44621165 L11.0110913,4.53033009 L13.4804214,7 L11.0110913,9.46966991 C10.7448247,9.73593648 10.7206187,10.1526002 10.9384731,10.4462117 L11.0110913,10.5303301 C11.2773578,10.7965966 11.6940215,10.8208027 11.987633,10.6029482 L12.0717514,10.5303301 L15.0010408,7.60104076 C15.3053243,7.29675725 15.3306812,6.819171 15.0771116,6.4860037 L15.0010408,6.39895924 L12.0717514,3.46966991 C11.7788582,3.1767767 11.3039845,3.1767767 11.0110913,3.46966991 Z M7.03033009,3.46966991 C6.73743687,3.1767767 6.26256313,3.1767767 5.96966991,3.46966991 L5.96966991,3.46966991 L3.04038059,6.39895924 L2.96430971,6.4860037 C2.71074012,6.819171 2.73609708,7.29675725 3.04038059,7.60104076 L3.04038059,7.60104076 L5.96966991,10.5303301 L6.05378835,10.6029482 C6.34739984,10.8208027 6.76406352,10.7965966 7.03033009,10.5303301 L7.03033009,10.5303301 L7.10294824,10.4462117 C7.3208027,10.1526002 7.29659665,9.73593648 7.03033009,9.46966991 L7.03033009,9.46966991 L4.561,7 L7.03033009,4.53033009 L7.10294824,4.44621165 C7.3208027,4.15260016 7.29659665,3.73593648 7.03033009,3.46966991 Z"
-                            id="形状结合"
-                            fill="#FFFFFF"
-                            mask="url(#mask-2)"
-                          ></path>
-                          <path
-                            d="M15,15.5 C15.5522847,15.5 16,15.9477153 16,16.5 C16,17.0128358 15.6139598,17.4355072 15.1166211,17.4932723 L15,17.5 L3,17.5 C2.44771525,17.5 2,17.0522847 2,16.5 C2,15.9871642 2.38604019,15.5644928 2.88337887,15.5067277 L3,15.5 L15,15.5 Z"
-                            id="路径-17"
-                            fill="#FFFFFF"
-                            fill-rule="nonzero"
-                            mask="url(#mask-2)"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                  总开发者人数
-                </h4>
-                <strong class="counts-numbers">10000+</strong>
-              </div>
-            </div> -->
-            <div class="counts-text">
-              种下生态树，万物竞长，聚力生态<br />
-              金蝶愿与全球生态伙伴<br />
-              携手打造共享，共赢，共生的企业云生态<br />
-              祈愿“<strong>生态树</strong>”<br />
-              枝繁叶茂，硕果累累<br />
-            </div>
-          </div>
         </div>
-        <!-- <div class="description">
-          <h2 class="description-slogan">
-            以客户价值为中心，给生态伙伴以舞台，丰富行业场景应用
-          </h2>
-          <div class="description-stucture">
-            <img :src="`./images/cloud_eco@${dpr}x.png`" alt="云生态" />
-          </div>
-          <div class="description-brand">
-            <div class="description-brand-qrcode">
-              <img src="./images/qrcode.png" alt="金蝶云生态" />
-            </div>
-            <div class="description-brand-text">
-              <span>扫码加入我们</span>
-              <h3>携手同行， 缔造不凡</h3>
-            </div>
-          </div>
-          <ul class="description-feature">
-            <li><img :src="`./images/icon_revenue@${dpr}x.png`" alt="" />增加营收</li>
-            <li><img :src="`./images/icon_renown@${dpr}x.png`" alt="" />提高名声</li>
-            <li><img :src="`./images/icon_growing@${dpr}x.png`" alt="" />助你成长</li>
-            <li><img :src="`./images/icon_service@${dpr}x.png`" alt="" />为你服务</li>
-          </ul>
-        </div> -->
       </main>
-      <!-- <footer class="footer">
-        2020金蝶软件（中国）有限公司 粤ICP备05041751号-2 粤公网安备 44030502002324号
-      </footer> -->
+    </div>
+    <div class="slide-down">
+      向下滑
+      <img src="./images/slide_down.svg" alt="向下滑" />
     </div>
     <script src="./scripts/lottie.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
@@ -461,10 +366,10 @@
 
       // 设置画布大小为浏览器窗口大小
       function resizeCanvas() {
-        WIDTH = document.documentElement.clientWidth;
-        HEIGHT = document.documentElement.clientHeight;
+        WIDTH = document.documentElement.clientWidth || 1920;
+        HEIGHT = document.documentElement.clientHeight || 1080;
         canvas.setAttribute('width', WIDTH);
-        canvas.setAttribute('height', background.offsetHeight);
+        canvas.setAttribute('height', HEIGHT);
       }
 
       // 根据tree的形状随机生成所有star的坐标
@@ -672,52 +577,24 @@
               .get('/kd/ecos/partner/queryall')
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
-                  const partnerList = response.data.data;
+                  let partnerList = response.data.data;
 
-                  // 处理前三轮播放，1:3:3的比例
-                  const level1PartnerList = [];
-                  const level2PartnerList = [];
-                  const level3PartnerList = [];
-                  const deleteArr = [];
-                  const round = 3;
                   for (let i = 0; i < partnerList.length; i++) {
-                    const partner = partnerList[i];
-                    if (partner.partnerLevel == 1 && level1PartnerList.length < round) {
-                      level1PartnerList.push(partner);
-                      deleteArr.push(i);
-                    }
-                    if (partner.partnerLevel == 2 && level2PartnerList.length < round * 3) {
-                      level2PartnerList.push(partner);
-                      deleteArr.push(i);
-                    }
-                    if (partner.partnerLevel == 3 && level3PartnerList.length < round * 3) {
-                      level3PartnerList.push(partner);
-                      deleteArr.push(i);
-                    }
-                    if (
-                      level1PartnerList.length === round &&
-                      level2PartnerList.length === round * 3 &&
-                      level3PartnerList.length === round * 3
-                    ) {
-                      break;
-                    }
-                  }
-                  deleteArr.forEach((index) => {
-                    partnerList.splice(index, 1);
-                  });
-                  for (let i = 0; i < round; i++) {
-                    for (let j = 0; j < 7; j++) {
-                      if (j === 6 && level1PartnerList.length > 0) {
-                        partnerList.unshift(level1PartnerList.pop());
-                      } else if (j % 2 === 1 && level2PartnerList.length > 0) {
-                        partnerList.unshift(level2PartnerList.pop());
-                      } else if (level3PartnerList.length > 0) {
-                        partnerList.unshift(level3PartnerList.pop());
-                      }
-                    }
+                    partnerList[i].partnerLevel = 1 + Math.floor(Math.random() * 3);
+                    console.log('product: ', partnerList[i].productionList[0]);
+                    partnerList[i].productName = partnerList[i].productionList[0]
+                      ? partnerList[i].productionList[0].productName
+                      : '应用名称';
+                    partnerList[i].productInfo = partnerList[i].productionList[0]
+                      ? partnerList[i].productionList[0].productInfo
+                      : '应用简介';
                   }
 
                   // 把最终结果赋值给 this.partnerList
+                  for (let i = 0; i < 5; i++) {
+                    partnerList = [...partnerList, ...partnerList];
+                  }
+
                   this.partnerList = partnerList;
 
                   if (isLightUp) {
@@ -816,30 +693,30 @@
             const partnerPosArr = [
               [
                 { left: 100, top: 100 },
-                { left: 600, top: 300 },
+                { left: 560, top: 300 },
                 { left: 220, top: 220 },
                 { left: 320, top: 20 },
-                { left: 500, top: 200 },
-                { left: 400, top: 360 },
-                { left: 0, top: 300 },
+                { left: 420, top: 200 },
+                { left: 340, top: 360 },
+                { left: 20, top: 300 },
               ],
               [
-                { left: 120, top: 400 },
-                { left: 500, top: 120 },
-                { left: 300, top: 200 },
-                { left: 200, top: 60 },
-                { left: 600, top: 300 },
-                { left: 20, top: 180 },
-                { left: 420, top: 340 },
+                { left: 160, top: 320 },
+                { left: 470, top: 90 },
+                { left: 300, top: 220 },
+                { left: 220, top: 60 },
+                { left: 540, top: 260 },
+                { left: 80, top: 160 },
+                { left: 420, top: 380 },
               ],
               [
                 { left: 300, top: 330 },
-                { left: 350, top: 0 },
-                { left: 500, top: 100 },
-                { left: 250, top: 150 },
-                { left: 10, top: 250 },
-                { left: 100, top: 400 },
-                { left: 600, top: 350 },
+                { left: 400, top: 40 },
+                { left: 420, top: 200 },
+                { left: 240, top: 160 },
+                { left: 120, top: 40 },
+                { left: 80, top: 300 },
+                { left: 540, top: 350 },
               ],
             ];
 
@@ -875,6 +752,8 @@
           playPartnerInfo: function () {
             this.infoFadeIn = true;
             this.partnerInfo = this.currentPartnerList[this.partnerIndex];
+
+            console.log('partnerInfo: ', this.partnerInfo);
             if (this.partnerIndex < 7) {
               console.log('partnerIndex: ', this.partnerIndex);
               this.partnerIndex += 1;

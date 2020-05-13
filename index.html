@@ -24,24 +24,19 @@
         <div class="interactive">
           <div class="partner-box">
             <div class="interactive-counts">
-              <div class="interactive-slogan">
-                <img :src="`./images/slogan@${dpr}x.png`" alt="金蝶云生态" />
+              <div class="counts-text">
+                <strong>不能胜寸心，安能胜苍穹。</strong>
+                “苍穹”代表着生命的原力，代表着生生不息、开放包容。
+                与产业共生的“大我”，将如浩瀚苍穹，群星璀璨。
               </div>
               <div class="counts-energy">
-                <h4>生态树能量值</h4>
+                <h4><img src="./images/icon_energy.svg" alt="" />生态树能量值</h4>
                 <strong ref="energyValue"></strong>
                 <span
                   :class="`counts-energy-effect ${isLightUp ? ' lightup' : ''}`"
                   ref="addEnergyEffect"
                   >+100</span
                 >
-              </div>
-              <div class="counts-text">
-                种下生态树，万物竞长，聚力生态<br />
-                金蝶愿与全球生态伙伴<br />
-                携手打造共享，共赢，共生的企业云生态<br />
-                祈愿“<strong>生态树</strong>”<br />
-                枝繁叶茂，硕果累累<br />
               </div>
               <div class="counts-qrcode"></div>
             </div>
@@ -61,7 +56,7 @@
                 <div
                   v-if="!item.partnerLogo && item.partnerShortName"
                   class="partner-name"
-                  :style="`font-size: ${item.size/45}rem`"
+                  :style="`font-size: ${item.size/(item.partnerShortName.split('_')[0].length>2 ? 45 : 35) }rem`"
                 >
                   <strong>{{item.partnerShortName.split('_')[0]}}</strong>
                   <span>{{item.partnerShortName.split('_')[1]}}</span>
@@ -90,7 +85,7 @@
                   <div
                     v-if="!partnerInfo.partnerLogo && partnerInfo.partnerShortName"
                     class="partner-name"
-                    :style="`font-size: ${72/38}rem`"
+                    :style="`font-size: ${72/(partnerInfo.partnerShortName.split('_')[0].length>2 ? 38 : 28)}rem`"
                   >
                     <strong>{{partnerInfo.partnerShortName.split('_')[0]}}</strong>
                     <span>{{partnerInfo.partnerShortName.split('_')[1]}}</span>

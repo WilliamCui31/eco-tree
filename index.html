@@ -306,7 +306,6 @@
             bgStars.push(bgStar);
           }
         }
-        console.log('bgStarNumber: ', bgStars.length);
 
         if (isLightUp) {
           // 显示星云
@@ -338,8 +337,6 @@
               stars.push(star);
             }
           }
-
-          console.log('starNumber: ', stars.length);
 
           // 星星闪烁
           glink();
@@ -530,6 +527,14 @@
         });
       }
 
+      function getStyle(obj, name) {
+        if (obj.currentStyle) {
+          return obj.currentStyle[name];
+        } else {
+          return getComputedStyle(obj, false)[name];
+        }
+      }
+
       new Vue({
         el: '#app',
         data: {
@@ -546,7 +551,7 @@
           partnerIndex: 0,
           partnerInfo: {},
           isLightUp: isLightUp,
-          isSmallScreen: WIDTH <=1280 || HEIGHT <=628,
+          isSmallScreen: WIDTH <= 1280 || HEIGHT <= 628,
           detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {
@@ -580,7 +585,6 @@
 
                   for (let i = 0; i < partnerList.length; i++) {
                     partnerList[i].partnerLevel = 1 + Math.floor(Math.random() * 3);
-                    console.log('product: ', partnerList[i].productionList[0]);
                     partnerList[i].productName = partnerList[i].productionList[0]
                       ? partnerList[i].productionList[0].productName
                       : '应用名称';
@@ -590,10 +594,11 @@
                   }
 
                   // 把最终结果赋值给 this.partnerList
-                  for (let i = 0; i < 5; i++) {
+                  for (let i = 0; i < 10; i++) {
                     partnerList = [...partnerList, ...partnerList];
                   }
 
+                  console.log('partnerList: ', partnerList);
                   this.partnerList = partnerList;
 
                   if (isLightUp) {
@@ -684,7 +689,7 @@
           },
 
           playPartnerList: function () {
-            console.log('currentRound: ', this.currentRound);
+            // console.log('currentRound: ', this.currentRound);
             const roundNumber = 7;
             const currentPartnerList = [];
 
@@ -752,9 +757,8 @@
             this.infoFadeIn = true;
             this.partnerInfo = this.currentPartnerList[this.partnerIndex];
 
-            console.log('partnerInfo: ', this.partnerInfo);
             if (this.partnerIndex < 7) {
-              console.log('partnerIndex: ', this.partnerIndex);
+              // console.log('partnerIndex: ', this.partnerIndex);
               this.partnerIndex += 1;
               this.timer1 = setTimeout(() => {
                 this.infoFadeIn = false;
@@ -767,8 +771,10 @@
               this.partnerIndex = 0;
 
               this.currentPartnerList.forEach((partner) => {
-                partner.left = treeRect.width / 2;
-                partner.top = treeRect.height / 2;
+                const width = 656.1;
+                const height = 599.4;
+                partner.left = (width-partner.size) / 2;
+                partner.top = (height-partner.size) / 2;
               });
 
               this.timer3 = setTimeout(() => {
@@ -778,7 +784,7 @@
           },
 
           handleMouseEnter: function (index) {
-            console.log('partnerIndex: ', index);
+            // console.log('partnerIndex: ', index);
             if (this.fadeIn) {
               this.timer1 && clearInterval(this.timer1);
               this.timer2 && clearInterval(this.timer2);

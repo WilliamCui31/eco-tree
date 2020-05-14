@@ -85,7 +85,7 @@
                   <div
                     v-if="!partnerInfo.partnerLogo && partnerInfo.partnerShortName"
                     class="partner-name"
-                    :style="`font-size: ${72/(partnerInfo.partnerShortName.split('_')[0].length>2 ? 38 : 28)}rem`"
+                    :style="`font-size: ${(isSmallScreen ? 100 : 72)/(partnerInfo.partnerShortName.split('_')[0].length>2 ? 38 : 28)}rem`"
                   >
                     <strong>{{partnerInfo.partnerShortName.split('_')[0]}}</strong>
                     <span>{{partnerInfo.partnerShortName.split('_')[1]}}</span>

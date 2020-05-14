@@ -258,8 +258,13 @@ body {
   -webkit-transform: scale(1.2);
   transform: scale(1.2);
   visibility: hidden;
-  -webkit-transition: all 0.2s 0.7s;
-  transition: all 0.2s 0.7s;
+}
+
+.background .cloud-container img.onlight {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  visibility: visible;
 }
 
 .background .cloud-container img.lightup {
@@ -267,6 +272,8 @@ body {
   -webkit-transform: scale(1);
   transform: scale(1);
   visibility: visible;
+  -webkit-transition: all 0.2s 0.7s;
+  transition: all 0.2s 0.7s;
 }
 
 .background #lottie {
@@ -922,7 +929,6 @@ body {
   margin: 0 auto;
   margin-top: 1rem;
 }
-
 
 @media screen and (min-width: 1921px) {
   html,

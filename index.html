@@ -176,11 +176,11 @@
         WIDTH,
         HEIGHT,
         treeRect,
-        isLightUp = false;
+        isLightUp = localStorage.getItem('isLightUp');
 
       if (isLightUp) {
         // 显示星云
-        cloudStar.className = 'lightup';
+        cloudStar.className = 'onlight';
       }
 
       // 加载生态树
@@ -308,9 +308,6 @@
         }
 
         if (isLightUp) {
-          // 显示星云
-          cloudStar.className = 'lightup';
-
           // 背景星星闪烁
           glink();
         } else {
@@ -394,17 +391,6 @@
           var y = canvas.height / 2 - (treeRect.height / 2 - Math.floor(num / w));
           stars[i].focusPos = { x, y };
         }
-
-        for (let i = fitLength; i < starsLength; i++) {
-          var x = treeRect.x + treeRect.width / 2;
-          var y = treeRect.y + treeRect.height * 0.4;
-          var r1 = treeRect.width / 2;
-          var r2 = treeRect.height * 0.4;
-
-          const scrollTop = document.documentElement.scrollTop;
-          const scrollLeft = document.documentElement.scrollLeft;
-          stars[i].focusPos = getEllipsePath(x + scrollLeft, y + scrollTop, r1, r2);
-        }
       }
 
       // 吸附star到tree上的函数
@@ -467,16 +453,6 @@
         requestAnimationFrame(bgGlink);
       }
 
-      // 给定椭圆圆心和半径填充椭圆函数
-      function getEllipsePath(x, y, r1, r2) {
-        let R1 = r1 * Math.random();
-        let R2 = r2 * Math.random();
-        let theta = Math.random() * 2 * Math.PI;
-        targetX = x + R1 * Math.cos(theta);
-        targetY = y + R2 * Math.sin(theta);
-        return { x: targetX, y: targetY };
-      }
-
       // 十六进制颜色值转rgba
       function colorRgba(sHex, alpha) {
         // 十六进制颜色值的正则表达式
@@ -502,15 +478,6 @@
         }
       }
 
-      // 防抖函数
-      function debounce(fn, wait) {
-        let timer = null;
-        return function () {
-          if (timer !== null) clearTimeout(timer);
-          timer = setTimeout(fn, wait);
-        };
-      }
-
       // 点亮生态树按钮动效
       function lightEffect() {
         axios.get('./scripts/data.json').then((response) => {
@@ -527,21 +494,12 @@
         });
       }
 
-      function getStyle(obj, name) {
-        if (obj.currentStyle) {
-          return obj.currentStyle[name];
-        } else {
-          return getComputedStyle(obj, false)[name];
-        }
-      }
-
       new Vue({
         el: '#app',
         data: {
-          devCounts: 0,
-          partnerCounts: 0,
           partnerList: [],
           currentRound: 0,
+          borrowNumber: 0,
           fadeIn: false,
           infoFadeIn: false,
           timer1: null,
@@ -552,11 +510,9 @@
           partnerInfo: {},
           isLightUp: isLightUp,
           isSmallScreen: WIDTH <= 1280 || HEIGHT <= 628,
-          detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {
           this.getEnergy();
-          this.getAllCounts();
           this.getPartnerList();
         },
         mounted() {
@@ -593,35 +549,12 @@
                       : '应用简介';
                   }
 
-                  // 把最终结果赋值给 this.partnerList
-                  for (let i = 0; i < 10; i++) {
-                    partnerList = [...partnerList, ...partnerList];
-                  }
-
-                  console.log('partnerList: ', partnerList);
                   this.partnerList = partnerList;
 
                   if (isLightUp) {
                     // 伙伴列表轮播
                     this.playPartnerList();
                   }
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          },
-
-          // 查询总开发者人数
-          getAllCounts: function () {
-            axios
-              .get('/kd/ecos/partner/getdevcounts')
-              .then((response) => {
-                if (response.status === 200 && response.data.code === 200) {
-                  const { devCounts, partnerCounts, prodCounts } = response.data.data;
-                  this.devCounts = [1, 0, 0, 0, 0, '+'] || devCounts;
-                  this.partnerCounts = [5, 0, 0, 0, '+'] || String(partnerCounts).split('');
-                  this.prodCounts = String(prodCounts).split('');
                 }
               })
               .catch((error) => {
@@ -677,6 +610,7 @@
               tree.style.visibility = 'visible';
               isLightUp = true;
               this.isLightUp = true;
+              localStorage.setItem('isLightUp', true); //缓存点亮状态
               lottieContainer.parentElement.removeChild(lottieContainer);
               cloudStar.className = 'lightup';
 
@@ -689,9 +623,23 @@
           },
 
           playPartnerList: function () {
-            // console.log('currentRound: ', this.currentRound);
+            // 上一轮有借的先还，然后从新计算轮播
+            if (this.borrowNumber > 0) {
+              this.partnerList.splice(0, this.borrowNumber);
+              this.borrowNumber = 0;
+              this.currentRound = 0;
+            }
+
             const roundNumber = 7;
             const currentPartnerList = [];
+
+            // 如果伙伴数量能够完整轮播次数，那么当大于伙伴数量的时候重新计算轮播
+            if (
+              (this.currentRound + 1) * roundNumber > this.partnerList.length &&
+              this.partnerList.length % 7 === 0
+            ) {
+              this.currentRound = 0;
+            }
 
             // 三组伙伴轮播位置布局
             const partnerPosArr = [
@@ -724,7 +672,7 @@
               ],
             ];
 
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < roundNumber; i++) {
               const currrentPartner = this.partnerList[this.currentRound * roundNumber + i];
 
               // 设置伙伴球的位置
@@ -734,7 +682,7 @@
 
               // 设置伙伴球的尺寸
               const sizeArr = [70, 80, 90, 100];
-              const randomNumber = Math.floor(Math.random() * 7);
+              const randomNumber = Math.floor(Math.random() * roundNumber);
               let size = 80;
               if (randomNumber === 0) size = 70;
               if (randomNumber === 1) size = 90;
@@ -742,6 +690,15 @@
               currrentPartner.size = size;
 
               currentPartnerList.push(currrentPartner);
+
+              if (
+                this.currentRound * roundNumber + i + 1 === this.partnerList.length &&
+                (this.currentRound * roundNumber + i + 1) % 7 !== 0
+              ) {
+                this.borrowNumber = roundNumber - i - 1;
+                const borrowPartnerList = this.partnerList.slice(0, this.borrowNumber);
+                this.partnerList = this.partnerList.concat(borrowPartnerList);
+              }
             }
 
             this.currentPartnerList = currentPartnerList;
@@ -757,7 +714,7 @@
             this.infoFadeIn = true;
             this.partnerInfo = this.currentPartnerList[this.partnerIndex];
 
-            if (this.partnerIndex < 7) {
+            if (this.partnerIndex < this.currentPartnerList.length) {
               // console.log('partnerIndex: ', this.partnerIndex);
               this.partnerIndex += 1;
               this.timer1 = setTimeout(() => {
@@ -773,8 +730,8 @@
               this.currentPartnerList.forEach((partner) => {
                 const width = 656.1;
                 const height = 599.4;
-                partner.left = (width-partner.size) / 2;
-                partner.top = (height-partner.size) / 2;
+                partner.left = (width - partner.size) / 2;
+                partner.top = (height - partner.size) / 2;
               });
 
               this.timer3 = setTimeout(() => {

@@ -208,7 +208,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 88vh;
+  height: 90vh;
 }
 
 .background::before {
@@ -290,11 +290,10 @@ body {
 .content .interactive {
   z-index: 1;
   position: relative;
-  height: 88vh;
+  height: 90vh;
 }
 
 .content .interactive .partner-box {
-  z-index: -1;
   position: absolute;
   left: 50%;
   bottom: 6rem;
@@ -305,11 +304,11 @@ body {
 }
 
 .content .interactive .partner-box .partner-list {
+  position: relative;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  position: relative;
   list-style: none;
 }
 
@@ -443,8 +442,8 @@ body {
   border-radius: 0.8rem;
   border-radius: 0.4rem;
   border: 1px solid;
-  -webkit-transform: translateY(-70%);
-  transform: translateY(-70%);
+  -webkit-transform: translateY(-55%);
+  transform: translateY(-55%);
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
   opacity: 0;
@@ -452,8 +451,8 @@ body {
 
 .content .interactive .partner-box .partner-info.fade-in {
   opacity: 1;
-  -webkit-transform: translateY(-65%);
-  transform: translateY(-65%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
   -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
 }
@@ -536,7 +535,6 @@ body {
   left: 0;
   width: 7.2rem;
   height: 7.2rem;
-  padding: 1rem;
   overflow: hidden;
   border-radius: 50%;
   -webkit-box-align: center;
@@ -610,8 +608,8 @@ body {
   .partner-name
   span {
   display: block;
-  -webkit-transform: scale(0.6);
-  transform: scale(0.6);
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
 }
 
 .content .interactive .partner-box .partner-info .partner-header .partner-title {
@@ -659,6 +657,8 @@ body {
 }
 
 .content .interactive .partner-box .partner-info .partner-app .partner-app-title {
+  display: flex;
+  align-items: center;
   margin: 0;
   line-height: 2.6rem;
   font-size: 1.6rem;
@@ -677,7 +677,7 @@ body {
 
 .content .interactive .partner-box .partner-info .partner-app .partner-app-title svg {
   height: 1.6rem;
-  vertical-align: middle;
+  margin-right: 1rem;
 }
 
 .content .interactive .partner-box .partner-info.level1 .partner-app .partner-app-title svg path {
@@ -746,7 +746,7 @@ body {
 
 .content .interactive .interactive-counts {
   position: absolute;
-  top: 0rem;
+  top: 5rem;
   left: 50%;
   width: 42rem;
   -webkit-transform: translateX(-160%);
@@ -922,24 +922,94 @@ body {
   margin-top: 1rem;
 }
 
-@media screen and (max-width: 1600px) {
+
+@media screen and (min-width: 1921px) {
+  html,
+  body {
+    font-size: 68.75%;
+  }
+}
+
+@media screen and (min-width: 2101px) {
+  html,
+  body {
+    font-size: 75%;
+  }
+}
+
+@media screen and (min-width: 2201px) {
+  html,
+  body {
+    font-size: 81.25%;
+  }
+}
+
+@media screen and (min-width: 2301px) {
+  html,
+  body {
+    font-size: 87.5%;
+  }
+}
+
+@media screen and (min-width: 2401px) {
+  html,
+  body {
+    font-size: 93.75%;
+  }
+}
+
+@media screen and (max-width: 1600px), (max-height: 900px) {
   html,
   body {
     font-size: 56.25%;
   }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1500px), (max-height: 800px) {
   html,
   body {
     font-size: 50%;
   }
 }
 
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1366px), (max-height: 700px) {
   html,
   body {
     font-size: 43.75%;
+  }
+}
+
+@media screen and (max-width: 1280px), (max-height: 628px) {
+  html,
+  body {
+    font-size: 37.5%;
+  }
+  .background .background-tree,
+  .content .interactive .partner-box {
+    bottom: 4rem;
+    width: 52.488rem;
+    height: 47.952rem;
+  }
+  .background #lottie {
+    height: 66rem;
+  }
+  .background .cloud-container {
+    bottom: 6rem;
+    width: 59.04rem;
+    height: 53.28rem;
+  }
+  .content .interactive .interactive-light {
+    width: 13rem;
+    height: 13rem;
+    -webkit-transform: translate(-50%, -20rem);
+    transform: translate(-50%, -20rem);
+  }
+  .content .interactive .interactive-counts {
+    top: 0rem;
+    left: 50%;
+    width: 28rem;
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
   }
 }
 

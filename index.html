@@ -26,7 +26,7 @@
             <div class="interactive-counts">
               <div class="counts-text">
                 <strong>不能胜寸心，安能胜苍穹。</strong>
-                “苍穹”代表着生命的原力，代表着生生不息、开放包容。
+                “苍穹”代表着生命的原力，代表着生生不息、开放包容。<br />
                 与产业共生的“大我”，将如浩瀚苍穹，群星璀璨。
               </div>
               <div class="counts-energy">
@@ -46,7 +46,7 @@
                 @mouseleave="handleMouseLeave"
                 v-for="(item, index) in currentPartnerList"
                 :class="`level${item.partnerLevel}${fadeIn ? ' fade-in' : ''}${item && partnerInfo && item.id === partnerInfo.id ? ' current' : ''}`"
-                :style="`left: ${item.left/10}rem; top: ${item.top/10}rem; width: ${item.size/10}rem; height: ${item.size/10}rem;`"
+                :style="`left: ${item.left/(isSmallScreen ? 14: 10)}rem; top: ${item.top/(isSmallScreen ? 14: 10)}rem; width: ${item.size/(isSmallScreen ? 14: 10)}rem; height: ${item.size/(isSmallScreen ? 14: 10)}rem;`"
               >
                 <img
                   v-if="item.partnerLogo"
@@ -157,6 +157,38 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
     <script>
+      const stars = [];
+      const bgStars = [];
+      const starNumber = 2000;
+      const bgStarNumber = 200;
+      const background = document.querySelector('.background');
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio > 1 ? 2 : 1;
+      const tree = document.getElementById('tree');
+      const lottieContainer = document.getElementById('lottie');
+      const cloudStar = document.getElementById('cloudStar');
+      const lightUpBtn = document.getElementById('lightUpBtn');
+
+      let od,
+        rafG,
+        rafP,
+        WIDTH,
+        HEIGHT,
+        treeRect,
+        isLightUp = false;
+
+      if (isLightUp) {
+        // 显示星云
+        cloudStar.className = 'lightup';
+      }
+
+      // 加载生态树
+      tree.src = `./images/eco_tree@${dpr}x.png`;
+
+      // 设置背景图片
+      background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
+
       function Star(id, x, y) {
         // id
         this.id = id;
@@ -237,33 +269,6 @@
         this.draw();
       };
 
-      const stars = [];
-      const bgStars = [];
-      const starNumber = 2000;
-      const bgStarNumber = 200;
-      const background = document.querySelector('.background');
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      const dpr = window.devicePixelRatio > 1 ? 2 : 1;
-      const tree = document.getElementById('tree');
-      const lottieContainer = document.getElementById('lottie');
-      const cloudStar = document.getElementById('cloudStar');
-      const lightUpBtn = document.getElementById('lightUpBtn');
-
-      // 加载生态树
-      tree.src = `./images/eco_tree@${dpr}x.png`;
-
-      // 设置背景图片
-      background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
-
-      let od,
-        rafG,
-        rafP,
-        WIDTH,
-        HEIGHT,
-        treeRect,
-        isLightUp = false;
-
       // 初始化画布和star
       tree.onload = init();
 
@@ -294,8 +299,7 @@
               x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
               y >= treeRect.y + scrollTop - 20 &&
               y <= treeRect.y + treeRect.height + scrollTop + 20
-            ) &&
-            !(x > 0 && x < 200 && y > 0 && y < 100)
+            )
           ) {
             const bgStar = new Star(`bg_${i}`, x, y);
             bgStar.draw();
@@ -327,8 +331,7 @@
                 x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
                 y >= treeRect.y + scrollTop - 20 &&
                 y <= treeRect.y + treeRect.height + scrollTop + 20
-              ) &&
-              !(x > 0 && x < 200 && y > 0 && y < 100)
+              )
             ) {
               const star = new Star(`power_${i}`, x, y);
               star.draw();
@@ -543,6 +546,7 @@
           partnerIndex: 0,
           partnerInfo: {},
           isLightUp: isLightUp,
+          isSmallScreen: WIDTH <=1280 || HEIGHT <=628,
           detailURL: 'http://dev.kcssz.cloud.kingdee.com/index/partner/home',
         },
         created: function () {

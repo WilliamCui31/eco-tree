@@ -930,38 +930,52 @@ body {
   margin-top: 1rem;
 }
 
-@media screen and (min-width: 1921px) {
+@media screen and (max-width: 2400px), (max-height: 1600px) {
   html,
   body {
-    font-size: 68.75%;
+    font-size: 100%;
   }
 }
 
-@media screen and (min-width: 2101px) {
+@media screen and (max-width: 2300px), (max-height: 1500px) {
   html,
   body {
-    font-size: 75%;
+    font-size: 93.75%;
   }
 }
 
-@media screen and (min-width: 2201px) {
-  html,
-  body {
-    font-size: 81.25%;
-  }
-}
-
-@media screen and (min-width: 2301px) {
+@media screen and (max-width: 2200px), (max-height: 1400px) {
   html,
   body {
     font-size: 87.5%;
   }
 }
 
-@media screen and (min-width: 2401px) {
+@media screen and (max-width: 2100px), (max-height: 1300px) {
   html,
   body {
-    font-size: 93.75%;
+    font-size: 81.25%;
+  }
+}
+
+@media screen and (max-width: 1920px), (max-height: 1200px) {
+  html,
+  body {
+    font-size: 75%;
+  }
+}
+
+@media screen and (max-width: 1800px), (max-height: 1100px) {
+  html,
+  body {
+    font-size: 68.75%;
+  }
+}
+
+@media screen and (max-width: 1700px), (max-height: 1000px) {
+  html,
+  body {
+    font-size: 62.5%;
   }
 }
 

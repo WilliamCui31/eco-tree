@@ -176,7 +176,8 @@
         WIDTH,
         HEIGHT,
         treeRect,
-        isLightUp = localStorage.getItem('isLightUp');
+        isLightUp = false;
+      // isLightUp = localStorage.getItem('isLightUp');
 
       if (isLightUp) {
         // 显示星云
@@ -189,7 +190,7 @@
       // 设置背景图片
       background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
 
-      function Star(id, x, y) {
+      function Star(id, x, y, r, gatherPos) {
         // id
         this.id = id;
 
@@ -197,22 +198,28 @@
         this.x = x;
         this.y = y;
 
-        const a = Math.random();
-        let b = 1;
-        if (a >= 0.2 && a < 0.5) {
-          b = 2;
-        } else if (a >= 0.5 && a < 0.7) {
-          b = 3;
-        } else if (a >= 0.7 && a < 0.75) {
-          b = 4;
-        } else if (a >= 0.75 && a < 0.7501) {
-          b = 5;
-        } else if (a >= 0.76 && a < 0.7601) {
-          b = 6;
+        let b;
+        if (!r) {
+          b = 1;
+          const a = Math.random();
+          if (a >= 0.2 && a < 0.5) {
+            b = 2;
+          } else if (a >= 0.5 && a < 0.7) {
+            b = 3;
+          } else if (a >= 0.7 && a < 0.75) {
+            b = 4;
+          } else if (a >= 0.75 && a < 0.7501) {
+            b = 5;
+          } else if (a >= 0.76 && a < 0.7601) {
+            b = 6;
+          }
         }
 
         // 半径
-        this.r = b;
+        this.r = r || b;
+
+        // 聚拢的位置信息
+        this.gatherPos = gatherPos;
 
         // 发光大小
         this.shadowBlur = 0;
@@ -227,6 +234,9 @@
       }
 
       Star.prototype.draw = function () {
+        const cloudRect = cloudStar.getBoundingClientRect();
+        const scaleX = cloudRect.width / 855;
+
         ctx.save();
         ctx.fillStyle = this.color;
         if (/^bg_/.test(this.id) || (!/^bg_/.test(this.id) && !isLightUp)) {
@@ -234,7 +244,7 @@
           ctx.shadowBlur = this.shadowBlur;
         }
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+        ctx.arc(this.x, this.y, this.r * scaleX, 0, 2 * Math.PI, false);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
@@ -256,16 +266,26 @@
       };
 
       Star.prototype.moveToTree = function () {
-        const vx = (this.focusPos.x - this.x) * 0.08;
-        const vy = (this.focusPos.y - this.y) * 0.08;
-        if (this.x !== this.focusPos.x) this.x += vx;
-        if (this.y !== this.focusPos.y) this.y += vy;
+        const cloudRect = cloudStar.getBoundingClientRect();
+        const scaleX = cloudRect.width / 855;
+        const scaleY = cloudRect.height / 699;
+        const gatherX = cloudRect.x + this.gatherPos.x * scaleX;
+        const gatherY = cloudRect.y + this.gatherPos.y * scaleY;
+        const vx = (gatherX - this.x) * 0.18;
+        const vy = (gatherY - this.y) * 0.18;
+        if (this.x !== this.gatherPos.x) this.x += vx;
+        if (this.y !== this.gatherPos.y) this.y += vy;
         this.draw();
       };
 
       Star.prototype.toTree = function () {
-        this.x = this.focusPos.x;
-        this.y = this.focusPos.y;
+        const cloudRect = cloudStar.getBoundingClientRect();
+        const scaleX = cloudRect.width / 855;
+        const scaleY = cloudRect.height / 699;
+        const gatherX = cloudRect.x + this.gatherPos.x * scaleX;
+        const gatherY = cloudRect.y + this.gatherPos.y * scaleY;
+        this.x = gatherX;
+        this.y = gatherY;
         this.draw();
       };
 
@@ -307,40 +327,53 @@
           }
         }
 
-        if (isLightUp) {
-          // 背景星星闪烁
-          glink();
-        } else {
-          // 初始化能量star
-          for (let i = 0; i < starNumber; i++) {
-            const directionX = Math.random() < 0.5 ? -1 : 1;
-            const directionY = Math.random() < 0.5 ? -1 : 1;
-            const spreadX = directionX ? 2 : 1;
-            const spreadY = directionY ? 2 : 1;
+        // 生态树星云位置大小信息
+        axios.get('./scripts/star_cloud.json').then((response) => {
+          if (response.status === 200) {
+            const starsData = response.data.stars;
+            console.log('ddd: ', starsData.length);
+            if (isLightUp) {
+              // 背景星星闪烁
+              glink();
+            } else {
+              // 初始化能量star
+              let i = 0;
+              while (i < starsData.length) {
+                const directionX = Math.random() < 0.5 ? -1 : 1;
+                const directionY = Math.random() < 0.5 ? -1 : 1;
+                const spreadX = directionX ? 2 : 1;
+                const spreadY = directionY ? 2 : 1;
 
-            const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
-            const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
+                const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
+                const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
+                const r = starsData[i].r;
+                const gatherPos = { x: starsData[i].x, y: starsData[i].y };
 
-            if (
-              !(
-                x >= treeRect.x + scrollLeft - 20 &&
-                x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
-                y >= treeRect.y + scrollTop - 20 &&
-                y <= treeRect.y + treeRect.height + scrollTop + 20
-              )
-            ) {
-              const star = new Star(`power_${i}`, x, y);
-              star.draw();
-              stars.push(star);
+                if (
+                  !(
+                    x >= treeRect.x + scrollLeft - 20 &&
+                    x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
+                    y >= treeRect.y + scrollTop - 20 &&
+                    y <= treeRect.y + treeRect.height + scrollTop + 20
+                  )
+                ) {
+                  const star = new Star(`power_${i}`, x, y, r, gatherPos);
+                  star.draw();
+                  stars.push(star);
+                  i += 1;
+                }
+              }
+
+              console.log(starsData.length, stars.length);
+
+              // 星星闪烁
+              glink();
+
+              // 点亮生态树按钮动效
+              lightEffect();
             }
           }
-
-          // 星星闪烁
-          glink();
-
-          // 点亮生态树按钮动效
-          lightEffect();
-        }
+        });
       }
 
       function drawTree() {
@@ -362,35 +395,6 @@
         HEIGHT = document.documentElement.clientHeight || 1080;
         canvas.setAttribute('width', WIDTH);
         canvas.setAttribute('height', HEIGHT);
-      }
-
-      // 根据tree的形状随机生成所有star的坐标
-      function generateFousPos() {
-        // tree的对star的吸附程度，值为0-1之间的值，0是完全不吸附，1是完全吸附。
-        const fit = 1;
-        const starsLength = stars.length;
-        const fitLength = Math.floor(starsLength * fit);
-
-        const minX = canvas.width / 2 - treeRect.width / 2;
-        const minY = canvas.height / 2 - treeRect.height / 2;
-        const data = ctx.getImageData(minX, minY, treeRect.width, treeRect.height * 0.9).data;
-
-        const ableDataArr = [];
-        for (var i = 0; i < data.length; i++) {
-          var num = Math.floor(Math.random() * data.length);
-          if (data[num]) {
-            ableDataArr.push(num);
-          }
-        }
-
-        for (let i = 0; i < fitLength; i++) {
-          var w = Math.floor(treeRect.width);
-          var num = ableDataArr[i];
-          num = Math.floor(num / 4);
-          var x = canvas.width / 2 - (w / 2 - (num % w));
-          var y = canvas.height / 2 - (treeRect.height / 2 - Math.floor(num / w));
-          stars[i].focusPos = { x, y };
-        }
       }
 
       // 吸附star到tree上的函数
@@ -450,6 +454,13 @@
           }
         });
 
+        // 能量星星
+        stars.forEach((star, index) => {
+          if (star.x > 0 && star.y > 0 && star.x < WIDTH && star.y < HEIGHT) {
+            star.toTree();
+          }
+        });
+
         requestAnimationFrame(bgGlink);
       }
 
@@ -480,7 +491,7 @@
 
       // 点亮生态树按钮动效
       function lightEffect() {
-        axios.get('./scripts/data.json').then((response) => {
+        axios.get('./scripts/lottie_data.json').then((response) => {
           if (response.status === 200) {
             var params = {
               container: lottieContainer,
@@ -597,14 +608,12 @@
               cancelAnimationFrame(rafG);
 
               // 开始星星的聚合动画
-              generateFousPos();
               polymeric();
 
-              // 取消星星的聚合动画
               setTimeout(() => {
                 cancelAnimationFrame(rafP);
                 bgGlink();
-              }, 800);
+              }, 3000);
 
               // 去除点亮生态树按钮动效，设置点亮状态
               tree.style.visibility = 'visible';
@@ -612,7 +621,6 @@
               this.isLightUp = true;
               localStorage.setItem('isLightUp', true); //缓存点亮状态
               lottieContainer.parentElement.removeChild(lottieContainer);
-              cloudStar.className = 'lightup';
 
               // 伙伴列表轮播
               this.playPartnerList();

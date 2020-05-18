@@ -244,23 +244,23 @@
           ctx.shadowBlur = this.shadowBlur;
         }
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r * scaleX, 0, 2 * Math.PI, false);
+        ctx.arc(this.x, this.y, this.r * scaleX * 0.9, 0, 2 * Math.PI, false);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
       };
 
       Star.prototype.glint = function () {
-        const vs = this.r * 10 * 0.01;
+        const vs = this.r * 0.04;
         const vr = this.r * 0.01;
         if (this.isBright) {
           this.shadowBlur -= vs;
-          this.r -= vr;
+          if (this.r > 1) this.r -= vr;
           if (this.shadowBlur <= 1) this.isBright = false;
         } else {
           this.shadowBlur += vs;
-          this.r += vr;
-          if (this.shadowBlur >= 20) this.isBright = true;
+          if (this.r < 16) this.r += vr;
+          if (this.shadowBlur >= this.r) this.isBright = true;
         }
         this.draw();
       };
@@ -331,7 +331,6 @@
         axios.get('./scripts/star_cloud.json').then((response) => {
           if (response.status === 200) {
             const starsData = response.data.stars;
-            console.log('ddd: ', starsData.length);
             if (isLightUp) {
               // 背景星星闪烁
               glink();
@@ -364,8 +363,6 @@
                 }
               }
 
-              console.log(starsData.length, stars.length);
-
               // 星星闪烁
               glink();
 
@@ -385,7 +382,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height,
+          treeRect.height
         );
       }
 

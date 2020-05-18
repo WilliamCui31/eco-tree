@@ -254,26 +254,7 @@ body {
 
 .background .cloud-container img {
   width: 100%;
-  opacity: 0;
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2);
   visibility: hidden;
-}
-
-.background .cloud-container img.onlight {
-  opacity: 1;
-  -webkit-transform: scale(1);
-  transform: scale(1);
-  visibility: visible;
-}
-
-.background .cloud-container img.lightup {
-  opacity: 1;
-  -webkit-transform: scale(1);
-  transform: scale(1);
-  visibility: visible;
-  -webkit-transition: all 0.2s 0.7s;
-  transition: all 0.2s 0.7s;
 }
 
 .background #lottie {

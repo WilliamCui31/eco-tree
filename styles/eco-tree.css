@@ -245,16 +245,11 @@ body {
 .background .cloud-container {
   position: absolute;
   left: 50%;
-  bottom: 6rem;
-  width: 73.8rem;
-  height: 66.6rem;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-}
-
-.background .cloud-container img {
-  width: 100%;
-  visibility: hidden;
+  bottom: 11rem;
+  width: 76rem;
+  height: 62.1rem;
+  -webkit-transform: translateX(-51%);
+  transform: translateX(-51%);
 }
 
 .background #lottie {

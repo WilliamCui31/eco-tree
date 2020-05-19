@@ -14,9 +14,7 @@
         <img id="tree" alt="苍穹生态树" />
       </div>
       <canvas id="canvas"></canvas>
-      <div class="cloud-container">
-        <img id="cloudStar" class="cloud-star" src="./images/cloud_star.svg" alt="金蝶云生态树" />
-      </div>
+      <div id="cloudStar" class="cloud-container"></div>
       <div id="lottie"></div>
     </div>
     <div id="app">
@@ -190,16 +188,17 @@
       // 设置背景图片
       background.style.setProperty('--background-image', `url(../images/aperture@${dpr}x.png)`);
 
-      function Star(id, x, y, r, gatherPos) {
+      function Star(id, x, y, starData) {
         // id
         this.id = id;
 
         // 圆心坐标
         this.x = x;
         this.y = y;
+        this.starData = starData;
 
         let b;
-        if (!r) {
+        if (!starData) {
           b = 1;
           const a = Math.random();
           if (a >= 0.2 && a < 0.5) {
@@ -216,20 +215,17 @@
         }
 
         // 半径
-        this.r = r || b;
-
-        // 聚拢的位置信息
-        this.gatherPos = gatherPos;
+        this.r = starData ? starData.r : b;
 
         // 发光大小
         this.shadowBlur = 0;
 
         // 透明度
-        this.alpha = (6 + Math.random() * 4) / 10;
+        this.alpha = starData ? starData.opacity || 1 : (6 + Math.random() * 4) / 10;
 
         // 颜色
         const colorArr = ['#2185ED', '#04CCFD', '#03C7C7', '#9F6DFF'];
-        const color = colorArr[Math.floor(Math.random() * 4)];
+        const color = starData ? starData.color : colorArr[Math.floor(Math.random() * 4)];
         this.color = colorRgba(color, this.alpha);
       }
 
@@ -269,12 +265,12 @@
         const cloudRect = cloudStar.getBoundingClientRect();
         const scaleX = cloudRect.width / 855;
         const scaleY = cloudRect.height / 699;
-        const gatherX = cloudRect.x + this.gatherPos.x * scaleX;
-        const gatherY = cloudRect.y + this.gatherPos.y * scaleY;
+        const gatherX = cloudRect.x + this.starData.x * scaleX;
+        const gatherY = cloudRect.y + this.starData.y * scaleY;
         const vx = (gatherX - this.x) * 0.18;
         const vy = (gatherY - this.y) * 0.18;
-        if (this.x !== this.gatherPos.x) this.x += vx;
-        if (this.y !== this.gatherPos.y) this.y += vy;
+        if (this.x !== this.starData.x) this.x += vx;
+        if (this.y !== this.starData.y) this.y += vy;
         this.draw();
       };
 
@@ -282,8 +278,8 @@
         const cloudRect = cloudStar.getBoundingClientRect();
         const scaleX = cloudRect.width / 855;
         const scaleY = cloudRect.height / 699;
-        const gatherX = cloudRect.x + this.gatherPos.x * scaleX;
-        const gatherY = cloudRect.y + this.gatherPos.y * scaleY;
+        const gatherX = cloudRect.x + this.starData.x * scaleX;
+        const gatherY = cloudRect.y + this.starData.y * scaleY;
         this.x = gatherX;
         this.y = gatherY;
         this.draw();
@@ -328,7 +324,7 @@
         }
 
         // 生态树星云位置大小信息
-        axios.get('./scripts/star_cloud.json').then((response) => {
+        axios.get('./scripts/cloud.json').then((response) => {
           if (response.status === 200) {
             const starsData = response.data.stars;
             if (isLightUp) {
@@ -345,8 +341,6 @@
 
                 const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
                 const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
-                const r = starsData[i].r;
-                const gatherPos = { x: starsData[i].x, y: starsData[i].y };
 
                 if (
                   !(
@@ -356,7 +350,7 @@
                     y <= treeRect.y + treeRect.height + scrollTop + 20
                   )
                 ) {
-                  const star = new Star(`power_${i}`, x, y, r, gatherPos);
+                  const star = new Star(`power_${i}`, x, y, starsData[i]);
                   star.draw();
                   stars.push(star);
                   i += 1;
@@ -382,7 +376,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height
+          treeRect.height,
         );
       }
 

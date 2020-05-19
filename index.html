@@ -163,6 +163,7 @@
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio > 1 ? 2 : 1;
+
       const tree = document.getElementById('tree');
       const lottieContainer = document.getElementById('lottie');
       const cloudStar = document.getElementById('cloudStar');
@@ -174,13 +175,7 @@
         WIDTH,
         HEIGHT,
         treeRect,
-        isLightUp = false;
-      // isLightUp = localStorage.getItem('isLightUp');
-
-      if (isLightUp) {
-        // 显示星云
-        cloudStar.className = 'onlight';
-      }
+        isLightUp = localStorage.getItem('isLightUp');
 
       // 加载生态树
       tree.src = `./images/eco_tree@${dpr}x.png`;
@@ -324,39 +319,40 @@
         }
 
         // 生态树星云位置大小信息
-        axios.get('./scripts/cloud.json').then((response) => {
+        axios.get('./scripts/star_cloud.json').then((response) => {
           if (response.status === 200) {
             const starsData = response.data.stars;
+
+            // 初始化能量star
+            let i = 0;
+            while (i < starsData.length) {
+              const directionX = Math.random() < 0.5 ? -1 : 1;
+              const directionY = Math.random() < 0.5 ? -1 : 1;
+              const spreadX = directionX ? 2 : 1;
+              const spreadY = directionY ? 2 : 1;
+
+              const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
+              const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
+
+              if (
+                !(
+                  x >= treeRect.x + scrollLeft - 20 &&
+                  x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
+                  y >= treeRect.y + scrollTop - 20 &&
+                  y <= treeRect.y + treeRect.height + scrollTop + 20
+                )
+              ) {
+                const star = new Star(`power_${i}`, x, y, starsData[i]);
+                star.draw();
+                stars.push(star);
+                i += 1;
+              }
+            }
+
             if (isLightUp) {
               // 背景星星闪烁
-              glink();
+              bgGlink();
             } else {
-              // 初始化能量star
-              let i = 0;
-              while (i < starsData.length) {
-                const directionX = Math.random() < 0.5 ? -1 : 1;
-                const directionY = Math.random() < 0.5 ? -1 : 1;
-                const spreadX = directionX ? 2 : 1;
-                const spreadY = directionY ? 2 : 1;
-
-                const x = directionX * Math.floor(Math.random() * WIDTH * spreadX);
-                const y = directionY * Math.floor(Math.random() * (background.offsetHeight - 100));
-
-                if (
-                  !(
-                    x >= treeRect.x + scrollLeft - 20 &&
-                    x <= treeRect.x + treeRect.width + scrollLeft + 20 &&
-                    y >= treeRect.y + scrollTop - 20 &&
-                    y <= treeRect.y + treeRect.height + scrollTop + 20
-                  )
-                ) {
-                  const star = new Star(`power_${i}`, x, y, starsData[i]);
-                  star.draw();
-                  stars.push(star);
-                  i += 1;
-                }
-              }
-
               // 星星闪烁
               glink();
 
@@ -384,8 +380,22 @@
       function resizeCanvas() {
         WIDTH = document.documentElement.clientWidth || 1920;
         HEIGHT = document.documentElement.clientHeight || 1080;
-        canvas.setAttribute('width', WIDTH);
-        canvas.setAttribute('height', HEIGHT);
+
+        // 解决canvas绘图模糊问题
+        const bspr =
+          ctx.webkitBackingStorePixelRatio ||
+          ctx.mozBackingStorePixelRatio ||
+          ctx.msBackingStorePixelRatio ||
+          ctx.oBackingStorePixelRatio ||
+          ctx.backingStorePixelRatio ||
+          1;
+        const ratio = dpr / bspr;
+        canvas.style.width = WIDTH + 'px';
+        canvas.style.height = HEIGHT + 'px';
+        canvas.width = WIDTH * ratio;
+        canvas.height = HEIGHT * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.translate(0.5, 0.5);
       }
 
       // 吸附star到tree上的函数
@@ -447,9 +457,7 @@
 
         // 能量星星
         stars.forEach((star, index) => {
-          if (star.x > 0 && star.y > 0 && star.x < WIDTH && star.y < HEIGHT) {
-            star.toTree();
-          }
+          star.toTree();
         });
 
         requestAnimationFrame(bgGlink);

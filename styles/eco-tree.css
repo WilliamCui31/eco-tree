@@ -202,6 +202,24 @@ body {
   }
 }
 
+@-webkit-keyframes surround {
+  0% {
+    stroke-dashoffset: 36rem;
+  }
+  100% {
+    stroke-dashoffset: -6rem;
+  }
+}
+
+@keyframes surround {
+  0% {
+    stroke-dashoffset: 36rem;
+  }
+  100% {
+    stroke-dashoffset: -6rem;
+  }
+}
+
 .background {
   z-index: 0;
   position: absolute;
@@ -883,6 +901,26 @@ body {
   height: 12.3rem;
   background: url(../images/qrcode@1x.png) no-repeat;
   background-size: contain;
+}
+
+.content .interactive .interactive-counts .counts-qrcode > svg {
+  position: absolute;
+  top: -0.3rem;
+  left: -0.3rem;
+  width: 10.6rem;
+  height: 10.7rem;
+}
+
+.content .interactive .interactive-counts .counts-qrcode > svg > #rect {
+  z-index: 1;
+  position: relative;
+  width: 10.6rem;
+  height: 10.7rem;
+  fill: none;
+  stroke: url(#grad1);
+  stroke-width: 0.5rem;
+  animation: surround 3s linear infinite;
+  stroke-dasharray: 6rem, 36rem;
 }
 
 .slide-down {

@@ -945,13 +945,9 @@ body {
   margin-top: 1rem;
 }
 
-.mask {
+#mask {
   z-index: 10;
   position: fixed;
-  top: 59rem;
-  left: 21.4rem;
-  width: 12.7rem;
-  height: 15rem;
   background-color: transparent;
   outline: rgba(0, 0, 0, 0.7) 1500rem solid;
 }

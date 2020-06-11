@@ -950,7 +950,7 @@ body {
 
 .content .interactive .interactive-counts .counts-qrcode {
   position: relative;
-  margin-top: 8rem;
+  margin-top: 5rem;
   width: 14rem;
   height: 14rem;
   background: url(../images/qrcode@1x.png) no-repeat;
@@ -1108,13 +1108,18 @@ body {
 
 #mask::after {
   position: absolute;
-  top: -5rem;
-  right: -28rem;
+  top: -7rem;
+  right: -35rem;
   width: 20rem;
+  padding: 2rem;
   content: '欢迎加入苍穹大家庭 现在就扫码加入我们';
   font-size: 2rem;
   line-height: 1.5;
   opacity: 0;
+  color: #333;
+  border-radius: 50%;
+  text-align: center;
+  background-color: #fff;
   transition: all 1s ease-out;
 }
 

@@ -202,21 +202,75 @@ body {
   }
 }
 
-@-webkit-keyframes surround {
+@-webkit-keyframes moveRight {
   0% {
-    stroke-dashoffset: 36rem;
+    transform: translateX(-100%);
   }
   100% {
-    stroke-dashoffset: -6rem;
+    transform: translateX(45rem);
   }
 }
 
-@keyframes surround {
+@keyframes moveRight {
   0% {
-    stroke-dashoffset: 36rem;
+    transform: translateX(-100%);
   }
   100% {
-    stroke-dashoffset: -6rem;
+    transform: translateX(45rem);
+  }
+}
+
+@-webkit-keyframes moveDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(45rem);
+  }
+}
+
+@keyframes moveDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(45rem);
+  }
+}
+
+@-webkit-keyframes moveLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-45rem);
+  }
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-45rem);
+  }
+}
+
+@-webkit-keyframes moveTop {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-45rem);
+  }
+}
+
+@keyframes moveTop {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-45rem);
   }
 }
 
@@ -897,31 +951,110 @@ body {
 .content .interactive .interactive-counts .counts-qrcode {
   position: relative;
   margin-top: 8rem;
-  width: 10rem;
-  height: 12.3rem;
+  width: 14rem;
+  height: 14rem;
   background: url(../images/qrcode@1x.png) no-repeat;
   background-size: contain;
 }
 
-.content .interactive .interactive-counts .counts-qrcode > svg {
-  position: absolute;
-  top: -0.3rem;
-  left: -0.3rem;
-  width: 10.6rem;
-  height: 10.7rem;
+.qrcode-tips {
+  width: 14rem;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 4rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.content .interactive .interactive-counts .counts-qrcode > svg > #rect {
-  z-index: 1;
-  position: relative;
-  width: 10.6rem;
-  height: 10.7rem;
-  fill: none;
-  stroke: url(#grad1);
-  stroke-linecap: round;
-  stroke-width: 0.5rem;
-  animation: surround 3s linear infinite;
-  stroke-dasharray: 6rem, 36rem;
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture {
+  position: absolute;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  width: 15rem;
+  height: 15rem;
+  margin: auto;
+  overflow: hidden;
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture::before,
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture::after,
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture-inner::before,
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture-inner::after {
+  position: absolute;
+  content: '';
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture::before {
+  top: 0;
+  left: 0;
+  width: 10rem;
+  height: 0.4rem;
+  border-radius: 0.4rem;
+  transform: translateX(-100%);
+  animation: moveRight 4s linear infinite;
+  background: linear-gradient(
+    to right,
+    rgba(2, 204, 254, 0),
+    rgba(2, 204, 254, 0.2) 50%,
+    rgba(2, 204, 254, 1)
+  );
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture::after {
+  top: 0;
+  right: 0;
+  width: 0.4rem;
+  height: 10rem;
+  border-radius: 0.4rem;
+  transform: translateY(-100%);
+  animation: moveDown 4s linear 1s infinite;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 204, 254, 0),
+    rgba(2, 204, 254, 0.2) 50%,
+    rgba(2, 204, 254, 1)
+  );
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture-inner::before {
+  bottom: 0;
+  right: 0;
+  width: 10rem;
+  height: 0.4rem;
+  border-radius: 0.4rem;
+  transform: translateX(100%);
+  animation: moveLeft 4s linear 2s infinite;
+  background: linear-gradient(
+    to left,
+    rgba(2, 204, 254, 0),
+    rgba(2, 204, 254, 0.2) 50%,
+    rgba(2, 204, 254, 1)
+  );
+}
+
+.content .interactive .interactive-counts .counts-qrcode .qrcode-aperture-inner::after {
+  bottom: 0;
+  left: 0;
+  width: 0.4rem;
+  height: 10rem;
+  border-radius: 0.4rem;
+  transform: translateY(100%);
+  animation: moveTop 4s linear 3s infinite;
+  background: linear-gradient(
+    to top,
+    rgba(2, 204, 254, 0),
+    rgba(2, 204, 254, 0.2) 50%,
+    rgba(2, 204, 254, 1)
+  );
 }
 
 .slide-down {
@@ -949,7 +1082,46 @@ body {
   z-index: 10;
   position: fixed;
   background-color: transparent;
-  outline: rgba(0, 0, 0, 0.7) 1500rem solid;
+  visibility: hidden;
+  transition: all 1s ease-out;
+  outline: rgba(0, 0, 0, 0) 1500rem solid;
+}
+
+#mask.show {
+  visibility: visible;
+  outline-color: rgba(0, 0, 0, 0.6);
+  transition-timing-function: ease-in;
+}
+
+#mask::before {
+  position: absolute;
+  top: 1rem;
+  right: -13rem;
+  width: 12rem;
+  height: 6.9rem;
+  content: '';
+  opacity: 0;
+  background: url(../images/arrow@1x.png);
+  background-size: contain;
+  transition: all 1s ease-out;
+}
+
+#mask::after {
+  position: absolute;
+  top: -5rem;
+  right: -28rem;
+  width: 20rem;
+  content: '欢迎加入苍穹大家庭 现在就扫码加入我们';
+  font-size: 2rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+#mask.show::before,
+#mask.show::after {
+  opacity: 1;
+  transition-timing-function: ease-in;
 }
 
 @media screen and (max-width: 2400px), (max-height: 1600px) {
@@ -1091,5 +1263,8 @@ body {
   }
   .content .interactive .interactive-counts .counts-qrcode {
     background-image: url(../images/qrcode@2x.png);
+  }
+  #mask::before {
+    background-image: url(../images/arrow@2x.png);
   }
 }

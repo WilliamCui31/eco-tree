@@ -37,17 +37,11 @@
                 >
               </div>
               <div class="counts-qrcode" id="qrcode">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style="stop-color: rgb(255, 0, 0); stop-opacity: 1;" />
-                      <stop offset="50%" style="stop-color: rgb(255, 255, 0); stop-opacity: 0.5;" />
-                      <stop offset="100%" style="stop-color: rgb(255, 0, 0); stop-opacity: 1;" />
-                    </linearGradient>
-                  </defs>
-                  <rect id="rect" />
-                </svg>
+                <div class="qrcode-aperture">
+                  <div class="qrcode-aperture-inner"></div>
+                </div>
               </div>
+              <div class="qrcode-tips">扫一扫加入我们</div>
             </div>
             <ul class="partner-list">
               <li
@@ -180,6 +174,7 @@
       const lottieContainer = document.getElementById('lottie');
       const cloudStar = document.getElementById('cloudStar');
       const lightUpBtn = document.getElementById('lightUpBtn');
+      const mask = document.getElementById('mask');
 
       let od,
         rafG,
@@ -412,7 +407,6 @@
         setTimeout(() => {
           //定位遮罩镂空层
           const qrcode = document.getElementById('qrcode');
-          const mask = document.getElementById('mask');
           const qrcodeRect = qrcode.getBoundingClientRect();
           mask.style.top = qrcodeRect.top - 5 + 'px';
           mask.style.left = qrcodeRect.left - 5 + 'px';
@@ -631,6 +625,13 @@
                 cancelAnimationFrame(rafP);
                 bgGlink();
               }, 3000);
+
+              setTimeout(() => {
+                mask.className = 'show';
+                setTimeout(() => {
+                  mask.removeAttribute('class');
+                }, 3000);
+              }, 1000);
 
               // 去除点亮生态树按钮动效，设置点亮状态
               tree.style.visibility = 'visible';

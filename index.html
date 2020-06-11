@@ -513,17 +513,12 @@
 
       // 点亮生态树按钮动效
       function lightEffect() {
-        axios.get('./scripts/lottie_data.json').then((response) => {
-          if (response.status === 200) {
-            var params = {
-              container: lottieContainer,
-              renderer: 'svg',
-              loop: true,
-              autoplay: true,
-              animationData: response.data,
-            };
-            lottie.loadAnimation(params);
-          }
+        lottie.loadAnimation({
+          container: document.getElementById('lottie'),
+          path: './scripts/lottie_data.json',
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
         });
       }
 

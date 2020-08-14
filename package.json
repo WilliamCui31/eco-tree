@@ -1,0 +1,23 @@
+{
+  "name": "eco-tree",
+  "version": "1.0.0",
+  "description": "kingdee eco-tree page",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilliamCui31/eco-tree.git"
+  },
+  "keywords": [
+    "eco-tree",
+    "activies"
+  ],
+  "author": "William Cui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WilliamCui31/eco-tree/issues"
+  },
+  "homepage": "https://github.com/WilliamCui31/eco-tree#readme"
+}

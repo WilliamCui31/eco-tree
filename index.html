@@ -379,7 +379,7 @@
           treeRect.x + scrollLeft,
           treeRect.y + scrollTop,
           treeRect.width,
-          treeRect.height,
+          treeRect.height
         );
       }
 
@@ -516,6 +516,9 @@
         });
       }
 
+      const isDemo = true;
+      let energy = 13140;
+
       new Vue({
         el: '#app',
         data: {
@@ -555,8 +558,11 @@
         methods: {
           // 查询伙伴列表
           getPartnerList: function () {
+            const partnerListURL = isDemo
+              ? './scripts/partner_list.json'
+              : '/kd/ecos/partner/queryall';
             axios
-              .get('/kd/ecos/partner/queryall')
+              .get(partnerListURL)
               .then((response) => {
                 if (response.status === 200 && response.data.code === 200) {
                   let partnerList = response.data.data;
@@ -586,30 +592,41 @@
 
           // 获取能量值
           getEnergy: function () {
-            axios
-              .get('/kd/ecos/production/geteneryvalue')
-              .then((response) => {
-                if (response.status === 200 && response.data.code === 200) {
-                  od.update(response.data.data);
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+            if (isDemo) {
+              setTimeout(() => {
+                od.update(energy);
+              }, 0);
+            } else {
+              axios
+                .get('/kd/ecos/production/geteneryvalue')
+                .then((response) => {
+                  if (response.status === 200 && response.data.code === 200) {
+                    od.update(response.data.data);
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
           },
 
           // 增加能量值
           addEnergy: function () {
-            axios
-              .get('/kd/ecos/production/eneryvalue')
-              .then((response) => {
-                if (response.status === 200 && response.data.code === 200) {
-                  od.update(response.data.data);
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+            if (isDemo) {
+              energy += 100;
+              od.update(energy);
+            } else {
+              axios
+                .get('/kd/ecos/production/eneryvalue')
+                .then((response) => {
+                  if (response.status === 200 && response.data.code === 200) {
+                    od.update(response.data.data);
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
           },
 
           //点亮生态树
